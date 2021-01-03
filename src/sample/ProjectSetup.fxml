@@ -30,7 +30,7 @@
                             <content>
                                 <VBox spacing="8.0" style="-fx-background-color: #f7f7f7;">
                                     <children>
-                                        <TitledPane fx:id="importPane" animated="false" collapsible="true" maxHeight="200.0">
+                                        <TitledPane fx:id="importPane" animated="false" collapsible="true" expanded="false" maxHeight="200.0">
                                             <graphic>
                                                 <CheckBox fx:id="importOn" mnemonicParsing="false" text="Import" />
                                             </graphic>
