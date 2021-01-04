@@ -139,8 +139,8 @@
 
 .text-area,
 .text-field{
-   -fx-faint-focus-color: #d02b0677;
-   -fx-focus-color: #d02b0677;
+   -fx-faint-focus-color: #063fb066;
+   -fx-focus-color: #063fb066;
 }
 
 .list-view{

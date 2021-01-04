@@ -24,14 +24,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.CheckListView;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProjectSetupController implements Initializable {
@@ -43,7 +41,7 @@ public class ProjectSetupController implements Initializable {
     @FXML
     VBox root;
     @FXML
-    Tab manifestTab, specsTab, settingsTab, scanPathTab, columnsTab;
+    Tab manifestTab, specsTab, settingsTab, scanPathTab, columnsTab, completeTab;
     @FXML
     private Label importFileLbl;
     @FXML
@@ -130,6 +128,11 @@ public class ProjectSetupController implements Initializable {
     private CheckBox userEntryOn;
 
     @FXML
+    private TitledPane procStructPane;
+    @FXML
+    private CheckComboBox<String> procStructCombo;
+
+    @FXML
     private TitledPane boxTrackPane;
 
     @FXML
@@ -144,6 +147,15 @@ public class ProjectSetupController implements Initializable {
     private HBox pathPrevRoot;
     @FXML
     private ListView<?> ulColumns;
+    @FXML
+    private TitledPane defaultColPane;
+    @FXML
+    private CheckComboBox<String> defaultColCombo;
+
+    @FXML
+    private TitledPane confirmPane;
+    @FXML
+    private Button submitBtn;
 
     @FXML
     void addSubPath() {
@@ -325,18 +337,19 @@ public class ProjectSetupController implements Initializable {
             this.pane = pane;
             this.nodes.forEach(e2 -> e2.setDisable(true));
             this.pane.setExpanded(false);
-
-            this.toggle.selectedProperty().addListener(e -> {
-                if (this.toggle.isSelected()) {
-                    this.pane.setExpanded(true);
-                    this.nodes.forEach(e2 -> e2.setDisable(false));
-                    isActive.set(true);
-                } else {
-                    this.pane.setExpanded(false);
-                    this.nodes.forEach(e2 -> e2.setDisable(true));
-                    isActive.set(false);
-                }
-            });
+            if (toggle != null) {
+                this.toggle.selectedProperty().addListener(e -> {
+                    if (this.toggle.isSelected()) {
+                        this.pane.setExpanded(true);
+                        this.nodes.forEach(e2 -> e2.setDisable(false));
+                        isActive.set(true);
+                    } else {
+                        this.pane.setExpanded(false);
+                        this.nodes.forEach(e2 -> e2.setDisable(true));
+                        isActive.set(false);
+                    }
+                });
+            }
         }
 
         public boolean isActive() {
@@ -479,6 +492,11 @@ public class ProjectSetupController implements Initializable {
         }
     }
 
+    @FXML
+    private void submit() {
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         listProvider.provider = headers;
@@ -489,6 +507,7 @@ public class ProjectSetupController implements Initializable {
         tabs.add(settingsTab);
         tabs.add(scanPathTab);
         tabs.add(columnsTab);
+        tabs.add(completeTab);
 
         //Check for any imported/created headers, then handle the other tab's functionality
         tabs.forEach(e -> {
@@ -525,6 +544,8 @@ public class ProjectSetupController implements Initializable {
         PaneAssets pdfAssets = new PaneAssets(pdfPane, pdfOn, FXCollections.observableArrayList(pdfDPI, pdfMode, pdfComp, pdfFormat));
         PaneAssets commentAssets = new PaneAssets(commentsPane, commentsOn, FXCollections.observableArrayList(comments));
         PaneAssets backupAssets = new PaneAssets(backupPane, backupOn, FXCollections.observableArrayList(backupPath, backupBtn));
+//        PaneAssets procStructAssets = new PaneAssets(procStructPane, null, FXCollections.observableArrayList(procStructCombo));
+//        PaneAssets completeAssets = new PaneAssets(confirmPane, null, FXCollections.observableArrayList(submitBtn));
 
         List<CheckComboBox<String>> dpiList = new ArrayList<>();
         dpiList.add(jpgDPI);
@@ -610,6 +631,38 @@ public class ProjectSetupController implements Initializable {
                     }
                 }
             });
+        });
+
+        //TODO: These will be replaced dynamically through the database (Extra Default Cols & Process Steps can be added and removed later)
+        procStructCombo.getItems().addAll(FXCollections.observableArrayList(Arrays.asList("Prepping", "Scanning", "QCing", "Cropping", "Rescans", "Shipment")));
+        procStructCombo.getCheckModel().checkAll();
+        procStructCombo.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> c) {
+                StringBuilder builder = new StringBuilder();
+                c.getList().forEach(e -> {
+                    builder.append(e).append(" , ");
+                });
+
+                if (!builder.toString().isEmpty()) {
+                    procStructCombo.setTitle(builder.substring(0, builder.length() - 2));
+                }
+            }
+        });
+        defaultColCombo.getItems().addAll(FXCollections.observableArrayList(Arrays.asList("Row", "Completed", "Queued", "Computer", "Pages", "Name", "Date", "Transfer Date", "Upload #", "Comments")));
+        defaultColCombo.getCheckModel().checkAll();
+        defaultColCombo.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> c) {
+                StringBuilder builder = new StringBuilder();
+
+                c.getList().forEach(e -> {
+                    builder.append(e).append(" , ");
+                });
+                if (!builder.toString().isEmpty()) {
+                    defaultColCombo.setTitle(builder.substring(0, builder.length() - 2));
+                }
+            }
         });
     }
 }
