@@ -250,6 +250,24 @@
                             <content>
                                 <VBox spacing="8.0" style="-fx-background-color: #f7f7f7;">
                                     <children>
+                              <TitledPane fx:id="procStructPane" animated="false" maxHeight="200.0" text="Process Structure" textFill="WHITE">
+                                 <padding>
+                                    <Insets bottom="8.0" left="8.0" right="8.0" />
+                                 </padding>
+                                 <content>
+                                    <VBox alignment="CENTER" spacing="24.0" style="-fx-background-color: white;">
+                                       <padding>
+                                          <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+                                       </padding>
+                                       <children>
+                                          <CheckComboBox fx:id="procStructCombo" prefHeight="40.0" prefWidth="796.0" showCheckedCount="true" title="" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                                 <VBox.margin>
+                                    <Insets top="8.0" />
+                                 </VBox.margin>
+                              </TitledPane>
                                         <TitledPane fx:id="boxTrackPane" animated="false" collapsible="true" expanded="false" maxHeight="200.0">
                                             <graphic>
                                                 <CheckBox fx:id="boxTrackOn" mnemonicParsing="false" text="Box Tracking" />
@@ -394,7 +412,7 @@
                             <content>
                                 <VBox spacing="8.0" style="-fx-background-color: #f7f7f7;">
                                     <children>
-                                        <TitledPane animated="false" maxHeight="200.0" text="Default Columns" textFill="WHITE">
+                                        <TitledPane fx:id="defaultColPane" animated="false" maxHeight="200.0" text="Default Columns" textFill="WHITE">
                                             <padding>
                                                 <Insets left="8.0" right="8.0" top="16.0" />
                                             </padding>
@@ -403,136 +421,9 @@
                                                     <padding>
                                                         <Insets bottom="32.0" left="32.0" right="32.0" top="24.0" />
                                                     </padding>
-                                                    <children>
-                                                        <HBox alignment="CENTER" layoutX="34.0" layoutY="34.0">
-                                                            <children>
-                                                                <ComboBox prefHeight="37.0" prefWidth="600.0" promptText="Sub Path" />
-                                                                <Button mnemonicParsing="false" prefWidth="30.0" style="-fx-background-color: transparent;" text="X" textFill="#d70000" translateX="8.0">
-                                                                    <HBox.margin>
-                                                                        <Insets top="2.0" />
-                                                                    </HBox.margin>
-                                                                    <font>
-                                                                        <Font name="Berlin Sans FB" size="18.0" />
-                                                                    </font>
-                                                                </Button>
-                                                            </children>
-                                                            <VBox.margin>
-                                                                <Insets left="16.0" />
-                                                            </VBox.margin>
-                                                        </HBox>
-                                                        <HBox alignment="CENTER">
-                                                            <children>
-                                                                <ComboBox prefHeight="37.0" prefWidth="600.0" promptText="Sub Path" />
-                                                                <Button mnemonicParsing="false" prefWidth="30.0" style="-fx-background-color: transparent;" text="X" textFill="#d70000" translateX="8.0">
-                                                                    <HBox.margin>
-                                                                        <Insets top="2.0" />
-                                                                    </HBox.margin>
-                                                                    <font>
-                                                                        <Font name="Berlin Sans FB" size="18.0" />
-                                                                    </font>
-                                                                </Button>
-                                                            </children>
-                                                            <VBox.margin>
-                                                                <Insets left="16.0" />
-                                                            </VBox.margin>
-                                                        </HBox>
-                                                        <HBox alignment="CENTER">
-                                                            <children>
-                                                                <ComboBox prefHeight="37.0" prefWidth="600.0" promptText="Sub Path" />
-                                                                <Button mnemonicParsing="false" prefWidth="30.0" style="-fx-background-color: transparent;" text="X" textFill="#d70000" translateX="8.0">
-                                                                    <HBox.margin>
-                                                                        <Insets top="2.0" />
-                                                                    </HBox.margin>
-                                                                    <font>
-                                                                        <Font name="Berlin Sans FB" size="18.0" />
-                                                                    </font>
-                                                                </Button>
-                                                            </children>
-                                                            <VBox.margin>
-                                                                <Insets left="16.0" />
-                                                            </VBox.margin>
-                                                        </HBox>
-                                                        <HBox alignment="CENTER">
-                                                            <children>
-                                                                <ComboBox prefHeight="37.0" prefWidth="600.0" promptText="Sub Path" />
-                                                                <Button mnemonicParsing="false" prefWidth="30.0" style="-fx-background-color: transparent;" text="X" textFill="#d70000" translateX="8.0">
-                                                                    <HBox.margin>
-                                                                        <Insets top="2.0" />
-                                                                    </HBox.margin>
-                                                                    <font>
-                                                                        <Font name="Berlin Sans FB" size="18.0" />
-                                                                    </font>
-                                                                </Button>
-                                                            </children>
-                                                            <VBox.margin>
-                                                                <Insets left="16.0" />
-                                                            </VBox.margin>
-                                                        </HBox>
-                                                        <HBox alignment="CENTER">
-                                                            <children>
-                                                                <ComboBox prefHeight="37.0" prefWidth="600.0" promptText="Sub Path" />
-                                                                <Button mnemonicParsing="false" prefWidth="30.0" style="-fx-background-color: transparent;" text="X" textFill="#d70000" translateX="8.0">
-                                                                    <HBox.margin>
-                                                                        <Insets top="2.0" />
-                                                                    </HBox.margin>
-                                                                    <font>
-                                                                        <Font name="Berlin Sans FB" size="18.0" />
-                                                                    </font>
-                                                                </Button>
-                                                            </children>
-                                                            <VBox.margin>
-                                                                <Insets left="16.0" />
-                                                            </VBox.margin>
-                                                        </HBox>
-                                                        <HBox alignment="CENTER">
-                                                            <children>
-                                                                <ComboBox prefHeight="37.0" prefWidth="600.0" promptText="Sub Path" />
-                                                                <Button mnemonicParsing="false" prefWidth="30.0" style="-fx-background-color: transparent;" text="X" textFill="#d70000" translateX="8.0">
-                                                                    <HBox.margin>
-                                                                        <Insets top="2.0" />
-                                                                    </HBox.margin>
-                                                                    <font>
-                                                                        <Font name="Berlin Sans FB" size="18.0" />
-                                                                    </font>
-                                                                </Button>
-                                                            </children>
-                                                            <VBox.margin>
-                                                                <Insets left="16.0" />
-                                                            </VBox.margin>
-                                                        </HBox>
-                                                        <HBox alignment="CENTER">
-                                                            <children>
-                                                                <ComboBox prefHeight="37.0" prefWidth="600.0" promptText="Sub Path" />
-                                                                <Button mnemonicParsing="false" prefWidth="30.0" style="-fx-background-color: transparent;" text="X" textFill="#d70000" translateX="8.0">
-                                                                    <HBox.margin>
-                                                                        <Insets top="2.0" />
-                                                                    </HBox.margin>
-                                                                    <font>
-                                                                        <Font name="Berlin Sans FB" size="18.0" />
-                                                                    </font>
-                                                                </Button>
-                                                            </children>
-                                                            <VBox.margin>
-                                                                <Insets left="16.0" />
-                                                            </VBox.margin>
-                                                        </HBox>
-                                                        <HBox alignment="CENTER">
-                                                            <children>
-                                                                <ComboBox prefHeight="37.0" prefWidth="600.0" promptText="Sub Path" />
-                                                                <Button mnemonicParsing="false" prefWidth="30.0" style="-fx-background-color: transparent;" text="X" textFill="#d70000" translateX="8.0">
-                                                                    <HBox.margin>
-                                                                        <Insets top="2.0" />
-                                                                    </HBox.margin>
-                                                                    <font>
-                                                                        <Font name="Berlin Sans FB" size="18.0" />
-                                                                    </font>
-                                                                </Button>
-                                                            </children>
-                                                            <VBox.margin>
-                                                                <Insets left="16.0" />
-                                                            </VBox.margin>
-                                                        </HBox>
-                                                    </children>
+                                       <children>
+                                          <CheckComboBox fx:id="defaultColCombo" prefHeight="40.0" prefWidth="796.0" showCheckedCount="true" title="" />
+                                       </children>
                                                 </VBox>
                                             </content>
                                         </TitledPane>
@@ -560,6 +451,43 @@
                         </ScrollPane>
                     </content>
                 </Tab>
+            <Tab fx:id="completeTab" text="Complete">
+               <content>
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                     <content>
+                        <VBox spacing="8.0" style="-fx-background-color: #f7f7f7;">
+                           <children>
+                              <TitledPane fx:id="confirmPane" animated="false" maxHeight="200.0" text="Save Settings" textFill="WHITE">
+                                 <padding>
+                                    <Insets left="8.0" right="8.0" top="16.0" />
+                                 </padding>
+                                 <content>
+                                    <VBox alignment="CENTER" spacing="24.0" style="-fx-background-color: white;">
+                                       <padding>
+                                          <Insets bottom="32.0" left="32.0" right="32.0" top="24.0" />
+                                       </padding>
+                                       <children>
+                                          <HBox alignment="CENTER" layoutX="34.0" layoutY="34.0">
+                                             <VBox.margin>
+                                                <Insets left="16.0" top="8.0" />
+                                             </VBox.margin>
+                                             <children>
+                                                <Button fx:id="submitBtn" minHeight="40.0" mnemonicParsing="false" onAction="#submit" prefHeight="40.0" prefWidth="600.0" styleClass="secondaryBtn" text="Submit" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </TitledPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </content>
+            </Tab>
             </tabs>
         </TabPane>
     </children>
