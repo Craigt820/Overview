@@ -64,6 +64,7 @@
 .inner-titled-pane > .title .text{
     -fx-fill:#0a3f80;
     -fx-translate-x:12;
+    -fx-font-weight:bold;
 }
 
 .outer-titled-pane .content,

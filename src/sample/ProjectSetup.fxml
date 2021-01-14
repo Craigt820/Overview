@@ -269,7 +269,7 @@
                                                 </VBox>
                                              </content>
                                           </TitledPane>
-                                          <TitledPane maxWidth="-Infinity" minWidth="700.0" prefHeight="200.0" prefWidth="200.0" styleClass="inner-titled-pane" text="Edit" textFill="WHITE">
+                                          <TitledPane expanded="false" maxWidth="-Infinity" minWidth="700.0" prefHeight="200.0" prefWidth="200.0" styleClass="inner-titled-pane" text="Edit" textFill="WHITE">
                                              <content>
                                                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="24.0">
                                                    <children>
