@@ -34,7 +34,7 @@
                                           <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
                                        </VBox.margin>
                                        <content>
-                                          <HBox alignment="CENTER" maxHeight="72.0" minHeight="72.0" prefWidth="952.0" spacing="100.0" style="-fx-border-color: gray; -fx-border-width: 0 0 .4 0;">
+                                          <HBox alignment="CENTER" maxHeight="72.0" minHeight="72.0" prefWidth="952.0" spacing="100.0">
                                              <children>
                                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="16.0">
                                                    <children>
@@ -157,7 +157,7 @@
                                                       <Insets left="8.0" right="8.0" />
                                                    </VBox.margin>
                                                    <children>
-                                                      <TableView2 fx:id="invTable" fixedCellSize="70" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" style="-fx-background-radius: 8; -fx-background-color: #fbfbfb; -fx-border-color: #e6e6e6; -fx-border-radius: 8; -fx-border-width: 1;" stylesheets="@jfoenix-components.css" VBox.vgrow="ALWAYS">
+                                                      <TableView2 fx:id="invTable" fixedCellSize="70" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" stylesheets="@jfoenix-components.css" VBox.vgrow="ALWAYS">
                                                          <columns>
                                                             <TableColumn2 fx:id="details" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" resizable="false" />
                                                             <TableColumn2 fx:id="barcode" maxWidth="300.0" minWidth="48.0" prefWidth="200.0" text="Barcode" />
@@ -175,9 +175,9 @@
                                              </padding>
                                           </VBox>
                                        </content>
-                                       <padding>
+                                       <VBox.margin>
                                           <Insets left="16.0" right="16.0" />
-                                       </padding>
+                                       </VBox.margin>
                                     </TitledPane>
                                  </children>
                                  <padding>

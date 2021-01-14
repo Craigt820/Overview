@@ -35,9 +35,6 @@
                                             <graphic>
                                                 <CheckBox fx:id="importOn" mnemonicParsing="false" text="Import" />
                                             </graphic>
-                                            <padding>
-                                                <Insets left="8.0" right="8.0" top="16.0" />
-                                            </padding>
                                             <content>
                                                 <VBox alignment="CENTER" spacing="24.0" style="-fx-background-color: #fbfbfb;">
                                                     <padding>
@@ -79,8 +76,11 @@
                                                     </children>
                                                 </VBox>
                                             </content>
+                                 <padding>
+                                    <Insets left="8.0" right="8.0" top="16.0" />
+                                 </padding>
                                         </TitledPane>
-                                        <TitledPane fx:id="createPane" animated="false" collapsible="true" expanded="false" maxHeight="200.0" styleClass="outer-titled-pane">
+                                        <TitledPane fx:id="createPane" animated="false" collapsible="true" maxHeight="200.0" styleClass="outer-titled-pane">
                                             <graphic>
                                                 <CheckBox fx:id="createOn" mnemonicParsing="false" text="Create" />
                                             </graphic>
@@ -217,11 +217,11 @@
                                                 </VBox>
                                             </content>
                                         </TitledPane>
-                                        <TitledPane fx:id="commentsPane" animated="false" expanded="false" prefHeight="220.0" prefWidth="762.0" styleClass="outer-titled-pane" textFill="WHITE">
+                                        <TitledPane fx:id="commentsPane" animated="false" prefHeight="220.0" prefWidth="762.0" styleClass="outer-titled-pane" textFill="WHITE">
                                             <content>
                                                 <AnchorPane style="-fx-background-color: #fbfbfb;">
                                                     <children>
-                                                        <TextArea fx:id="comments" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                        <TextArea fx:id="comments" prefHeight="200.0" prefWidth="200.0" style="-fx-fill: #efefef;" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
                                                     </children>
                                                 </AnchorPane>
                                             </content>

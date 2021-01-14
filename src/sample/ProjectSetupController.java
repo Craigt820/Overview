@@ -314,9 +314,9 @@ public class ProjectSetupController implements Initializable {
             ColumnConstraints col1 = new ColumnConstraints();
             ColumnConstraints col2 = new ColumnConstraints();
             ColumnConstraints col3 = new ColumnConstraints();
-            col1.setPercentWidth(65);
-            col2.setPercentWidth(15);
-            col3.setPercentWidth(20);
+            col1.setPercentWidth(60);
+            col2.setPercentWidth(10);
+            col3.setPercentWidth(30);
             GridPane gridPane = new GridPane();
             gridPane.setAlignment(Pos.CENTER);
             gridPane.add(label, 0, 0);
@@ -564,9 +564,9 @@ public class ProjectSetupController implements Initializable {
             ColumnConstraints col1 = new ColumnConstraints();
             ColumnConstraints col2 = new ColumnConstraints();
             ColumnConstraints col3 = new ColumnConstraints();
-            col1.setPercentWidth(65);
-            col2.setPercentWidth(15);
-            col3.setPercentWidth(20);
+            col1.setPercentWidth(60);
+            col2.setPercentWidth(10);
+            col3.setPercentWidth(30);
             GridPane gridPane = new GridPane();
             gridPane.setAlignment(Pos.CENTER);
             gridPane.add(label, 0, 0);
