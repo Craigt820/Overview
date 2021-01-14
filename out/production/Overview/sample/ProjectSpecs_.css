@@ -54,26 +54,54 @@
 /*TITLED PANE*/
 
 
-.titled-pane > .title{
-    -fx-background-color: #063f80;
+.inner-titled-pane > .title {
+    -fx-background-color: #fbfbfb;
+    -fx-font-family:'Roboto medium';
+    -fx-font-size:16;
+    -fx-padding:8;
+}
+
+.inner-titled-pane > .title .text{
+    -fx-fill:#0a3f80;
+    -fx-translate-x:12;
+}
+
+.outer-titled-pane .content,
+.inner-titled-pane .content{
+   -fx-border-color:none;
+   -fx-background-color:  #fbfbfb;
+}
+
+
+.outer-titled-pane > .title{
+    -fx-background-color: #0a3f80;
     -fx-font-family:'Roboto medium';
     -fx-font-size:16;
     -fx-padding: 4;
 }
 
-.titled-pane > .title .text{
+.outer-titled-pane > .title .text{
     -fx-text-fill:white;
     -fx-translate-x:12;
 }
 
-.titled-pane > .title> .arrow-button .arrow{
+
+
+
+.inner-titled-pane > .title> .arrow-button .arrow{
+  -fx-background-color:#0a3f80;
+ -fx-padding:5;
+    -fx-translate-x:8;
+}
+
+.outer-titled-pane > .title> .arrow-button .arrow{
     -fx-background-color: white; 
     -fx-padding:5;
     -fx-translate-x:8;
 }
 
 .label{
-  -fx-font-size:24;
+  -fx-font-size:15;
 }
 
 .check-box{
@@ -141,6 +169,8 @@
 .text-field{
    -fx-faint-focus-color: #063fb066;
    -fx-focus-color: #063fb066;
+   -fx-background-color:#efefef;
+   -fx-border-color: #e6e6e6;
 }
 
 .list-view{

@@ -12,7 +12,7 @@ public final class CellFactories {
         @Override
         protected void updateItem(ExcelHandler.ExcelHeader item, boolean empty) {
             if (item != null) {
-                setText(item.getData());
+                setText(item.getName());
             }
             super.updateItem(item, empty);
         }

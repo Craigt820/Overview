@@ -15,33 +15,62 @@ public class ExcelHandler {
 
 
     public class ExcelHeader extends GridPane {
-        private String data;
+        private String sheet;
+        private String name;
         private int cellIndex;
+        private int row;
+        private ArrayList<Object> data = new ArrayList();
 
-        public ExcelHeader(String data, int cellIndex) {
-            this.data = data;
+        public ExcelHeader(String sheet, String name, int row, int cellIndex) {
+            this.sheet = sheet;
+            this.name = name;
+            this.row = row;
             this.cellIndex = cellIndex;
         }
 
-        public String getData() {
-            return data;
+        public String getName() {
+            return name;
         }
 
-        public void setData(String data) {
-            this.data = data;
+        public String getSheet() {
+            return sheet;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public int getCellIndex() {
             return cellIndex;
         }
 
+        public void setSheet(String sheet) {
+            this.sheet = sheet;
+        }
+
+        public int getRow() {
+            return row;
+        }
+
+        public void setRow(int row) {
+            this.row = row;
+        }
+
         public void setCellIndex(int cellIndex) {
             this.cellIndex = cellIndex;
         }
 
+        public ArrayList<Object> getData() {
+            return data;
+        }
+
+        public void setData(ArrayList<Object> data) {
+            this.data = data;
+        }
+
         @Override
         public String toString() {
-            System.out.printf("Data: %s | Cell Index: %d \n", getData(), getCellIndex());
+            System.out.printf("Data: %s | Cell Index: %d \n", getName(), getCellIndex());
             return super.toString();
         }
     }
@@ -54,6 +83,7 @@ public class ExcelHandler {
         this.file = file;
     }
 
+    //TODO: Only reads one sheet right now! Add multiple sheet mode...
     public ArrayList<ExcelHeader> readHeaders(File file) {
         ArrayList<ExcelHeader> headers = new ArrayList<>();
 
@@ -65,8 +95,9 @@ public class ExcelHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        numSheets = wb.getNumberOfSheets();
-        for (int sheetIdx = 0; sheetIdx < numSheets; sheetIdx++) {
+        numSheets = 1;
+        for (int sheetIdx = 0; sheetIdx < 1; sheetIdx++) {
+            assert wb != null;
             Sheet sheetObj = wb.getSheetAt(sheetIdx);
             if (sheetObj != null) {
                 Row headerRow = sheetObj.getRow(0);
@@ -75,8 +106,16 @@ public class ExcelHandler {
                     int cols = headerRow.getPhysicalNumberOfCells();
                     for (int i = 0; i < cols; i++) {
                         Cell cell = headerRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                        ExcelHeader header = new ExcelHeader(ExcelUtils.evaluateCell(wb, cell), cell.getColumnIndex());
-                        if (!header.getData().isEmpty()) {
+                        ExcelHeader header = new ExcelHeader(sheetObj.getSheetName(), ExcelUtils.evaluateCell(wb, cell), cell.getRow().getRowNum(), cell.getColumnIndex());
+                        for (int j = 1; j < sheetObj.getPhysicalNumberOfRows(); j++) {
+                            if (sheetObj.getRow(j) != null) {
+                                Object data = sheetObj.getRow(j).getCell(header.getCellIndex());
+                                header.getData().add(data);
+                                int finalJ = j;
+//                            System.out.printf("Sheet: %s Row: %d Cell: %d Data: %s \n", sheetObj.getSheetName(), finalJ, header.getCellIndex(), data.toString());
+                            }
+                        }
+                        if (header.getName() != null && !header.getName().isEmpty()) {
                             headers.add(header);
                         }
                     }
@@ -96,11 +135,6 @@ public class ExcelHandler {
             }
         }
         return headers;
-    }
-
-
-    public void readData(File file) {
-
     }
 
     public Map<String, String> getExamples() {
