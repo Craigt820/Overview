@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="16.0" style="-fx-background-color: #fafafa;" stylesheets="@ProjectSpecs_.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BoxDetailsController">
+<VBox alignment="CENTER" spacing="8.0" style="-fx-background-color: #fafafa;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BoxDetailsController">
    <children>
       <HBox alignment="TOP_RIGHT" prefWidth="200.0">
          <children>
@@ -19,16 +21,16 @@
             <Insets right="8.0" />
          </VBox.margin>
       </HBox>
+      <HBox>
+         <children>
+            <Label fx:id="boxName" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Box Name" />
+         </children>
+      </HBox>
       <HBox spacing="16.0">
          <children>
             <Label fx:id="barcode" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Barcode" textFill="#000000a6" />
             <Label text="|" />
             <Label fx:id="status" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Status" textFill="#000000a6" />
-         </children>
-      </HBox>
-      <HBox>
-         <children>
-            <Label fx:id="boxName" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Box Name" />
          </children>
       </HBox>
       <VBox VBox.vgrow="ALWAYS">
@@ -42,7 +44,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView fx:id="ovList" fixedCellSize="80.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <TreeView fx:id="ovTree" showRoot="false" stylesheets="@jfoenix-components.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -51,7 +53,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView fx:id="acList" fixedCellSize="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <ListView fx:id="acList" fixedCellSize="124.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -62,6 +64,10 @@
       </VBox>
    </children>
    <padding>
-      <Insets bottom="16.0" left="16.0" right="16.0" top="24.0" />
+      <Insets bottom="16.0" left="24.0" right="16.0" top="24.0" />
    </padding>
+   <stylesheets>
+      <URL value="@ProjectSpecs_.css" />
+      <URL value="@../../../CheckList_Test/src/jfoenix-components.css" />
+   </stylesheets>
 </VBox>

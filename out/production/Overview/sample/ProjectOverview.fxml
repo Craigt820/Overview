@@ -147,7 +147,7 @@
                                        <content>
                                           <VBox alignment="CENTER" spacing="16.0" style="-fx-background-color: #fbfbfb;">
                                              <children>
-                                                <CustomTextField prefHeight="58.0" prefWidth="854.0" promptText="Search">
+                                                <CustomTextField prefHeight="50.0" prefWidth="854.0" promptText="Search" style="-fx-border-color: #ededed;">
                                                    <VBox.margin>
                                                       <Insets left="8.0" right="8.0" />
                                                    </VBox.margin>

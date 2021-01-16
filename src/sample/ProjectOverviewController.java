@@ -4,17 +4,14 @@ import com.jfoenix.controls.JFXDrawer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.tableview2.TableColumn2;
 import org.controlsfx.control.tableview2.TableView2;
@@ -23,6 +20,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ProjectOverviewController implements Initializable {
@@ -41,26 +40,25 @@ public class ProjectOverviewController implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private TableView2<Collection> invTable;
+    private TableView2<Box> invTable;
 
     @FXML
-    private TableColumn<Collection, Hyperlink> barcode;
+    private TableColumn2<Box, Hyperlink> barcode;
 
     @FXML
-    private TableColumn2<Collection, ComboBox<String>> status;
+    private TableColumn2<Box, ComboBox<String>> status;
 
     @FXML
-    private TableColumn2<Collection, CheckComboBox<String>> employees;
+    private TableColumn2<Box, CheckComboBox<String>> employees;
 
     @FXML
-    private TableColumn2<Collection, String> name;
+    private TableColumn2<Box, String> name;
 
     @FXML
-    private TableColumn2<Collection, Integer> pages;
+    private TableColumn2<Box, Integer> pages;
 
     @FXML
-    private TableColumn2<Collection, Label> details;
-
+    private TableColumn2<Box, Label> details;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,11 +70,11 @@ public class ProjectOverviewController implements Initializable {
         details.setCellValueFactory(new PropertyValueFactory<>("details"));
         invTable.setColumnFixingEnabled(true);
         invTable.setRowFixingEnabled(true);
-        invTable.getItems().addAll(Arrays.asList(new Collection("330034", "Box 22", 22), new Collection("330034", "Box 23", 2222), new Collection("330034", "Box 24", 2242), new Collection("330034", "Box 25", 2442), new Collection("330034", "Box 26", 2222)));
+        invTable.getItems().addAll(Arrays.asList(new Box("330034", "Box 22", "Prepping", Arrays.asList("Alpha", "Beta"), 22), new Box("330034", "Box 23", "Inactive", Collections.emptyList(), 2222), new Box("330034", "Box 24", "Completed", Arrays.asList("Alpha", "Beta"), 2242), new Box("330034", "Box 25", "Inactive", Collections.emptyList(), 2442), new Box("330034", "Box 26", "Inactive", Collections.emptyList(), 2222)));
         invTable.getFixedColumns().add(details);
     }
 
-    public class Collection {
+    public class Box {
         private Hyperlink barcode;
         private ComboBox<String> status;
         private CheckComboBox<String> employees;
@@ -84,17 +82,22 @@ public class ProjectOverviewController implements Initializable {
         private int pages;
         private Label details;
 
-        public Collection(String barcode, String name, int pages) {
+        public Box(String barcode, String name, String status, List<String> employees, int pages) {
             this.barcode = new Hyperlink(barcode);
             this.name = new SimpleStringProperty(name);
             this.pages = pages;
             this.employees = new CheckComboBox<String>(FXCollections.observableArrayList("Alpha", "Beta", "Gamma", "Omega"));
+            employees.forEach(e -> {
+                this.employees.getCheckModel().check(e);
+            });
             this.employees.setMinWidth(300);
-            this.status = new ComboBox<String>(FXCollections.observableArrayList("-", "Prepping", "Scanning", "QC", "Rescans", "Shipment", "Complete"));
+            this.status = new ComboBox<String>(FXCollections.observableArrayList("Inactive", "Prepping", "Scanning", "QC", "Rescans", "Shipment", "Complete"));
+            this.getStatus().getSelectionModel().select(status);
             this.details = new Label();
             this.details.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             this.getDetails().getGraphic();
             this.details.setGraphic(new ImageView(getClass().getResource("info.png").toExternalForm()));
+            this.details.setTooltip(new Tooltip("Details"));
             this.details.setOnMousePressed(e -> {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("BoxDetails.fxml"));
                 try {
@@ -104,27 +107,36 @@ public class ProjectOverviewController implements Initializable {
                     drawer.setMinWidth(650);
                     drawer.setMinHeight(root.getHeight());
                     BoxDetailsController controller = loader.getController();
-                    controller.getBarcode().setText(this.getBarcode().getText());
+                    controller.getBarcode().setText("#"+this.getBarcode().getText());
                     controller.getBoxName().setText(this.name.get());
 
                     String selStatus = this.status.getSelectionModel().getSelectedItem();
-                    if (selStatus == null || selStatus.isEmpty()){
+                    if (selStatus == null || selStatus.isEmpty()) {
                         selStatus = "Inactive";
                     }
-                    BoxDetailsController.Activity b1 =new BoxDetailsController.Activity("#34390",LocalDateTime.now(),"Craig T.","Item Selected");
-                    BoxDetailsController.Activity b2 =new BoxDetailsController.Activity("#34390",LocalDateTime.now(),"Craig T.","Item Being Scanned");
-                    BoxDetailsController.Activity b3 =new BoxDetailsController.Activity("#34390",LocalDateTime.now(),"Craig T.","Item Completed");
-                    BoxDetailsController.Activity b4 =new BoxDetailsController.Activity("#84333",LocalDateTime.now(),"Cindy M.","Item Edited");
+                    BoxDetailsController.Activity b1 = new BoxDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Selected");
+                    BoxDetailsController.Activity b2 = new BoxDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Being Scanned");
+                    BoxDetailsController.Activity b3 = new BoxDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Completed");
+                    BoxDetailsController.Activity b4 = new BoxDetailsController.Activity("#84333", LocalDateTime.now(), "Cindy M.", "Item Edited");
 
-                    controller.getAcList().getItems().addAll(b1,b2,b3,b4);
+                    controller.getAcList().getItems().addAll(b1, b2, b3, b4);
+                    BoxDetailsController.Overview ab1 = new BoxDetailsController.Overview("", LocalDateTime.now(), "Test", "Craig T.", "Completed");
+                    TreeItem<BoxDetailsController.Overview> a1 = new TreeItem<>(new BoxDetailsController.Overview("#34390",LocalDateTime.now()));
+                    TreeItem<BoxDetailsController.Overview> a2 = new TreeItem<>(new BoxDetailsController.Overview("#34391",LocalDateTime.now()));
+                    TreeItem<BoxDetailsController.Overview> a3 = new TreeItem<>(new BoxDetailsController.Overview("#34392",LocalDateTime.now()));
+                    TreeItem<BoxDetailsController.Overview> a4 = new TreeItem<>(new BoxDetailsController.Overview("#34393",LocalDateTime.now()));
+
+                    TreeItem<BoxDetailsController.Overview> ovSubTreeItem = new TreeItem<>(ab1);
+                    a1.getChildren().add(ovSubTreeItem);
+                    controller.getOvTree().getRoot().getChildren().addAll(a1, a2, a3, a4);
+
                     controller.getStatus().setText(selStatus);
                     controller.getClose().setOnMouseClicked(e3 -> {
                         drawer.close();
-                        drawer.setOnDrawerClosed(e4->{
+                        drawer.setOnDrawerClosed(e4 -> {
                             drawer.setPrefWidth(0);
                             drawer.setMinWidth(0);
                         });
-
                     });
                     drawer.open();
 
@@ -177,7 +189,6 @@ public class ProjectOverviewController implements Initializable {
         public void setPages(int pages) {
             this.pages = pages;
         }
-
         public Label getDetails() {
             return details;
         }

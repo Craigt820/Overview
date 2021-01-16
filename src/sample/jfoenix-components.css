@@ -3,11 +3,11 @@
     -fx-text-fill:#0d1b78;
 }
 
+.combo-box .cell:hover .check-box,
 .combo-box .cell:hover {
+    -fx-background-color: rgba(242,242,242,.7);
     -fx-text-fill: black;
 }
-
-
 
 .table-view2 .virtual-flow .scroll-bar:horizontal,
 .table-view2 .virtual-flow .scroll-bar:vertical{
@@ -19,12 +19,14 @@
   -fx-size:50;
   
 }
+/*
 
 .table-view2 .column-overlay,
 .table-view2 .row-header .hbar,
 .table-view2 .row-header .table-view2 .column-header-background{
-  -fx-background-color:transparent;
+  -fx-background-color:#FEFEFE;
 }
+*/
 
 
 .table-view2 .table-row-cell .table-column{
@@ -41,17 +43,18 @@
   -fx-border-width: .1;
 }
 
+
 .table-view2 .row-header .table-column{
   -fx-background-color:#fefefe;
   -fx-padding: 0 0 0 0;
   -fx-border-color: #f0f0f066;
+  -fx-text-fill: black;
   -fx-border-width: .1;
   -fx-translate-x: 16;
 }
 
 .table-view2 .column-header-background .nested-column-header .table-column .label .text{
    -fx-font-size:13;
-
 }
 
 .table-view2 .row-header .table-view2 .column-header-background,
@@ -60,7 +63,7 @@
 .table-view2 .column-header-background .show-hide-columns-button,
 .table-view2 .column-header-background .filler,
 .table-view2 .column-header-background .nested-column-header .table-column{
-  -fx-background-color:#eeeeee;
+  -fx-background-color:#efefef;
   -fx-border-color: #f0f0f022;
 }
 
@@ -348,6 +351,39 @@
     -fx-font-size: 18px;
 }
 
+.tree-view .tree-cell:focused:filled .arrow{
+  -fx-background-color: black;
+}
+
+
+.tree-view .tree-cell:focused:filled .text{
+    -fx-fill:black;
+}
+
+
+
+.table-cell .hyperlink,
+.list-view .list-cell .hyperlink,
+.tree-view .tree-cell .hyperlink{
+  -fx-font-size:16;
+  -fx-font-weight:bold;
+}
+
+
+.tree-view .tree-cell{
+  -fx-font-size:17;
+  -fx-background-color: #fbfbfb;
+  -fx-padding: 16 0 0 16;
+  -fx-alignment:Center-LEFT;
+}
+
+.tree-view .tree-cell .arrow{
+   -fx-translate-y:2;
+}
+
+.tree-view{
+  -fx-background-color:#fbfbfb;
+}
 
 .table-view2,
 .table-view,
@@ -359,13 +395,9 @@
     -fx-table-header-border-color:#f0f0f0;
     -fx-table-cell-border-color: #f0f0f0;
 }
-
-
-
-.table-view2:focused .table-row-cell:filled:focused:selected,
-.table-view:focused .table-row-cell:filled:focused:selected,
+.table-view2:row-selection .table-row-cell:focused:filled:selected,
 .tree-table-view:focused .tree-table-row-cell:filled:focused:selected {
-    -fx-background-color:white;
+    -fx-background: none;
     -fx-text-background-color: black;
     -fx-text-fill: black;
 }
