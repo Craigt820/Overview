@@ -1,6 +1,5 @@
 package sample;
 
-import com.jfoenix.controls.JFXDrawer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -10,12 +9,11 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.tableview2.TableColumn2;
 import org.controlsfx.control.tableview2.TableView2;
@@ -27,44 +25,91 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ProjectOverviewController implements Initializable {
+import static sample.Main.projectOverviewController;
+
+public class ProjectCollectionTabController implements Initializable {
 
     @FXML
-    private AnchorPane root;
+    private ScrollPane root;
+
     @FXML
-    private TabPane colTabPane;
+    private Text totalPages;
+
     @FXML
-    private JFXDrawer drawer;
+    private Text itemProg;
+
+    @FXML
+    private Text groupProg;
+
+    @FXML
+    private CustomTextField invSearch;
+
+    @FXML
+    private TableView2<Group> invTable;
+
+    @FXML
+    private TableColumn2<Group, Hyperlink> barcode;
+
+    @FXML
+    private TableColumn2<Group, ComboBox<String>> status;
+
+    @FXML
+    private TableColumn2<Group, CheckComboBox<String>> employees;
+
+    @FXML
+    private TableColumn2<Group, String> name;
+
+    @FXML
+    private TableColumn2<Group, Integer> pages;
+
+    @FXML
+    private TableColumn2<Group, Label> details;
+
+    private ProjectOverviewController.Collection collection;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Main.projectOverviewController = this;
-        setupNewCollection("TEST");
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        employees.setCellValueFactory(new PropertyValueFactory<>("employees"));
+        barcode.setCellValueFactory(new PropertyValueFactory<>("barcode"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        pages.setCellValueFactory(new PropertyValueFactory<>("pages"));
+        details.setCellValueFactory(new PropertyValueFactory<>("details"));
+        invTable.setColumnFixingEnabled(true);
+        invTable.setRowFixingEnabled(true);
+        invTable.getItems().addAll(Arrays.asList(new Group("330034", "Box 22", "Prepping", Arrays.asList("Alpha", "Beta"), 22), new Group("330034", "Box 23", "Inactive", Collections.emptyList(), 2222), new Group("330034", "Box 24", "Completed", Arrays.asList("Alpha", "Beta"), 2242), new Group("330034", "Box 25", "Inactive", Collections.emptyList(), 2442), new Group("330034", "Box 26", "Inactive", Collections.emptyList(), 2222)));
+        invTable.getFixedColumns().add(details);
+        FilteredList<Group> filteredData = new FilteredList<Group>(invTable.getItems(), p -> true);
+        // Use textProperty
+        invSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(p -> {
+                // If filter text is empty, display all persons.
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (p.name.get().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches first name.
+                } else if (p.barcode.toString().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches last name.
+                } else if (p.getStatus().getSelectionModel().getSelectedItem().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (!p.getEmployees().getCheckModel().getCheckedItems().stream().map(String::toLowerCase).filter(e -> e.contains(lowerCaseFilter)).collect(Collectors.toList()).isEmpty()) {
+                    return true;
+                }
+                return false; // Does not match.
+            });
+        });
+
+        SortedList<Group> sortedData = new SortedList<Group>(filteredData);
+        sortedData.comparatorProperty().bind((ObservableValue<? extends Comparator<? super Group>>) invTable.comparatorProperty());
+        invTable.setItems(sortedData);
+
     }
 
-    private ProjectCollectionTabController setupNewCollection(String colName) {
-        Collection colObj = new Collection(colName);
-        ProjectCollectionTabController projectOverviewController = addCollectionTab(colName);
-        projectOverviewController.setCollection(colObj);
-        return projectOverviewController;
-    }
-
-    private ProjectCollectionTabController addCollectionTab(String colName) {
-        Tab tab = new Tab(colName);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ProjectCollectionTab.fxml"));
-        try {
-            Parent parent = (Parent) loader.load();
-            ProjectCollectionTabController projectOverviewController = loader.getController();
-            tab.setContent(parent);
-            colTabPane.getTabs().add(tab);
-            return projectOverviewController;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public class Box {
+    public class Group {
         private Hyperlink barcode;
         private ComboBox<String> status;
         private CheckComboBox<String> employees;
@@ -72,7 +117,7 @@ public class ProjectOverviewController implements Initializable {
         private int pages;
         private Label details;
 
-        public Box(String barcode, String name, String status, List<String> employees, int pages) {
+        public Group(String barcode, String name, String status, List<String> employees, int pages) {
             this.barcode = new Hyperlink("#" + barcode);
             this.name = new SimpleStringProperty(name);
             this.pages = pages;
@@ -92,10 +137,10 @@ public class ProjectOverviewController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("GroupDetails.fxml"));
                 try {
                     VBox box = loader.load();
-                    drawer.setSidePane(box);
-                    drawer.setDefaultDrawerSize(650);
-                    drawer.setMinWidth(650);
-                    drawer.setMinHeight(root.getHeight());
+                    projectOverviewController.getGroupDetailDrawer().setSidePane(box);
+                    projectOverviewController.getGroupDetailDrawer().setDefaultDrawerSize(650);
+                    projectOverviewController.getGroupDetailDrawer().setMinWidth(650);
+                    projectOverviewController.getGroupDetailDrawer().setMinHeight(projectOverviewController.getRoot().getHeight());
                     GroupDetailsController controller = loader.getController();
                     controller.getBarcode().setText(this.getBarcode().getText());
                     controller.getGroupName().setText(this.name.get());
@@ -122,13 +167,13 @@ public class ProjectOverviewController implements Initializable {
 
                     controller.getStatus().setText(selStatus);
                     controller.getClose().setOnMouseClicked(e3 -> {
-                        drawer.close();
-                        drawer.setOnDrawerClosed(e4 -> {
-                            drawer.setPrefWidth(0);
-                            drawer.setMinWidth(0);
+                        projectOverviewController.getGroupDetailDrawer().close();
+                        projectOverviewController.getGroupDetailDrawer().setOnDrawerClosed(e4 -> {
+                            projectOverviewController.getGroupDetailDrawer().setPrefWidth(0);
+                            projectOverviewController.getGroupDetailDrawer().setMinWidth(0);
                         });
                     });
-                    drawer.open();
+                    projectOverviewController.getGroupDetailDrawer().open();
 
                 } catch (IOException e2) {
                     e2.printStackTrace();
@@ -191,9 +236,9 @@ public class ProjectOverviewController implements Initializable {
     }
 
     public class Collection {
-        private List<Box> boxes = new ArrayList<>();
-        private int boxProg;
-        private int boxTotal;
+        private List<Group> groups = new ArrayList<>();
+        private int groupProg;
+        private int groupTotal;
         private int pageTotal;
         private int itemProg;
         private int itemTotal;
@@ -203,28 +248,28 @@ public class ProjectOverviewController implements Initializable {
             this.name = name;
         }
 
-        public List<Box> getBoxes() {
-            return boxes;
+        public List<Group> getGroups() {
+            return groups;
         }
 
-        public void setBoxes(List<Box> boxes) {
-            this.boxes = boxes;
+        public void setGroups(List<Group> groups) {
+            this.groups = groups;
         }
 
-        public int getBoxProg() {
-            return boxProg;
+        public int getGroupProg() {
+            return groupProg;
         }
 
-        public void setBoxProg(int boxProg) {
-            this.boxProg = boxProg;
+        public void setGroupProg(int groupProg) {
+            this.groupProg = groupProg;
         }
 
-        public int getBoxTotal() {
-            return boxTotal;
+        public int getGroupTotal() {
+            return groupTotal;
         }
 
-        public void setBoxTotal(int boxTotal) {
-            this.boxTotal = boxTotal;
+        public void setGroupTotal(int groupTotal) {
+            this.groupTotal = groupTotal;
         }
 
         public int getPageTotal() {
@@ -262,15 +307,11 @@ public class ProjectOverviewController implements Initializable {
 
     }
 
-    public AnchorPane getRoot() {
-        return root;
+    public ProjectOverviewController.Collection getCollection() {
+        return collection;
     }
 
-    public void setRoot(AnchorPane root) {
-        this.root = root;
-    }
-
-    public JFXDrawer getGroupDetailDrawer() {
-        return drawer;
+    public void setCollection(ProjectOverviewController.Collection collection) {
+        this.collection = collection;
     }
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="8.0" style="-fx-background-color: #fafafa;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BoxDetailsController">
+<VBox alignment="CENTER" spacing="8.0" style="-fx-background-color: #fafafa;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GroupDetailsController">
    <children>
       <HBox alignment="TOP_RIGHT" prefWidth="200.0">
          <children>
@@ -23,7 +23,7 @@
       </HBox>
       <HBox>
          <children>
-            <Label fx:id="boxName" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Box Name" />
+            <Label fx:id="groupName" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Group Name" />
          </children>
       </HBox>
       <HBox spacing="16.0">
@@ -35,7 +35,7 @@
       </HBox>
       <VBox VBox.vgrow="ALWAYS">
          <VBox.margin>
-            <Insets top="32.0" />
+            <Insets top="24.0" />
          </VBox.margin>
          <children>
             <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
@@ -44,7 +44,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TreeView fx:id="ovTree" showRoot="false" stylesheets="@jfoenix-components.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <TreeView fx:id="ovTree" showRoot="false" style="-fx-background-color: #FEFEFE;" stylesheets="@jfoenix-components.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -53,7 +53,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView fx:id="acList" fixedCellSize="124.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <ListView fx:id="acList" fixedCellSize="124.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FEFEFE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </content>

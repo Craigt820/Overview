@@ -9,14 +9,13 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import org.controlsfx.control.spreadsheet.Grid;
 
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-public class BoxDetailsController implements Initializable {
+public class GroupDetailsController implements Initializable {
     @FXML
     private Label close;
 
@@ -27,7 +26,7 @@ public class BoxDetailsController implements Initializable {
     private Label status;
 
     @FXML
-    private Label boxName;
+    private Label groupName;
 
     @FXML
     private TreeView<Overview> ovTree;
@@ -111,12 +110,14 @@ public class BoxDetailsController implements Initializable {
 
     public static class Overview extends GridPane {
         private String objID;
+        private int pages;
         private String description;
         private String employee;
         private LocalDateTime timeStamp;
         private String status;
 
-        public Overview(String objID, LocalDateTime timeStamp, String description, String employee, String status) {
+        public Overview(String objID, LocalDateTime timeStamp, int pages, String description, String employee, String status) {
+            this.pages = pages;
             this.objID = objID;
             this.description = description;
             this.employee = employee;
@@ -164,6 +165,14 @@ public class BoxDetailsController implements Initializable {
 
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public int getPages() {
+            return pages;
+        }
+
+        public void setPages(int pages) {
+            this.pages = pages;
         }
 
         public String getEmployee() {
@@ -246,12 +255,12 @@ public class BoxDetailsController implements Initializable {
         this.status = status;
     }
 
-    public Label getBoxName() {
-        return boxName;
+    public Label getGroupName() {
+        return groupName;
     }
 
-    public void setBoxName(Label boxName) {
-        this.boxName = boxName;
+    public void setGroupName(Label groupName) {
+        this.groupName = groupName;
     }
 
     public TreeView<Overview> getOvTree() {
