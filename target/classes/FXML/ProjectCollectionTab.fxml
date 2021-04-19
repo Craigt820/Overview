@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.tableview2.TableColumn2?>
+<?import org.controlsfx.control.tableview2.TableView2?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
+
+<ScrollPane fx:id="root" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" stylesheets="@../CSS/ProjectSpecs_.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ProjectCollectionTabController">
+   <content>
+      <VBox spacing="8.0" style="-fx-background-color: #efefef;">
+         <children>
+            <TitledPane styleClass="inner-titled-pane" text="Overview">
+               <VBox.margin>
+                  <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
+               </VBox.margin>
+               <content>
+                  <HBox alignment="CENTER" maxHeight="72.0" minHeight="72.0" prefWidth="952.0" spacing="100.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="16.0">
+                           <children>
+                              <ImageView fitHeight="32.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../IMAGES/Group%2074.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets bottom="32.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <VBox translateY="-8.0">
+                                 <HBox.margin>
+                                    <Insets left="16.0" />
+                                 </HBox.margin>
+                                 <children>
+                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="Groups">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="groupProg" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="0/0">
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="8.0" />
+                           </HBox.margin>
+                        </HBox>
+                        <AnchorPane maxHeight="40.0" minHeight="40.0" opacity="0.66" prefWidth="1.0" style="-fx-background-color: gray;">
+                           <HBox.margin>
+                              <Insets bottom="24.0" />
+                           </HBox.margin>
+                        </AnchorPane>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="16.0">
+                           <children>
+                              <ImageView fitHeight="36.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../IMAGES/checklist.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets bottom="32.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <VBox translateY="-6.0">
+                                 <HBox.margin>
+                                    <Insets left="16.0" />
+                                 </HBox.margin>
+                                 <children>
+                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="Items">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="itemProg" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="0/0">
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <AnchorPane minHeight="40.0" opacity="0.66" prefWidth="1.0" style="-fx-background-color: gray;">
+                           <HBox.margin>
+                              <Insets bottom="24.0" />
+                           </HBox.margin>
+                        </AnchorPane>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="16.0">
+                           <children>
+                              <ImageView fitHeight="43.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../IMAGES/open-book.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets bottom="34.0" top="8.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <VBox>
+                                 <HBox.margin>
+                                    <Insets left="16.0" />
+                                 </HBox.margin>
+                                 <children>
+                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="Images">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="totalPages" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="8.0" left="32.0" right="32.0" top="16.0" />
+                     </padding>
+                  </HBox>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="createPane1" animated="false" collapsible="false" maxHeight="1000.0" styleClass="outer-titled-pane" text="Inventory" textFill="WHITE" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox alignment="CENTER" spacing="16.0" style="-fx-background-color: #fbfbfb;">
+                     <children>
+                        <CustomTextField fx:id="invSearch" prefHeight="50.0" prefWidth="854.0" promptText="Search" style="-fx-border-color: #efefef;">
+                           <VBox.margin>
+                              <Insets left="8.0" right="8.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Segoe UI" size="14.0" />
+                           </font>
+                        </CustomTextField>
+                        <VBox VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets left="8.0" right="8.0" />
+                           </VBox.margin>
+                           <children>
+                              <TableView2 fx:id="invTable" fixedCellSize="70" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" style="-fx-border-color: #07255e11; -fx-border-radius: 8;" stylesheets="@../CSS/jfoenix-components.css" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn2 fx:id="details" maxWidth="56.0" minWidth="56.0" prefWidth="56.0" />
+                                    <TableColumn2 fx:id="barcode" maxWidth="300.0" minWidth="48.0" prefWidth="200.0" text="Barcode" />
+                                    <TableColumn2 fx:id="name" maxWidth="1000.0" minWidth="100.0" prefWidth="600.0" text="Name" />
+                                    <TableColumn2 fx:id="pallet" maxWidth="200.0" minWidth="100.0" prefWidth="100.0" text="Pallet" />
+                                    <TableColumn2 fx:id="pages" maxWidth="200.0" minWidth="100.0" prefWidth="100.0" text="Images" />
+                                    <TableColumn2 fx:id="status" maxWidth="1000.0" minWidth="100.0" prefWidth="200.0" text="Status" />
+                                    <TableColumn2 fx:id="location" maxWidth="1000.0" minWidth="200.0" prefWidth="400.0" text="Location" />
+                                 </columns>
+                              </TableView2>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="24.0" />
+                     </padding>
+                  </VBox>
+               </content>
+               <VBox.margin>
+                  <Insets left="16.0" right="16.0" />
+               </VBox.margin>
+            </TitledPane>
+         </children>
+         <padding>
+            <Insets bottom="24.0" top="8.0" />
+         </padding>
+      </VBox>
+   </content>
+</ScrollPane>
