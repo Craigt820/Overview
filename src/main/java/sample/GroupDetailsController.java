@@ -42,16 +42,17 @@ public class GroupDetailsController implements Initializable {
     private TableColumn<Overview, String> idCol;
 
     @FXML
+    private TableColumn<Overview, String> nameCol;
+
+    @FXML
     private TableColumn<Overview, Integer> countCol;
 
     @FXML
     private TableColumn<Overview, String> boxCol;
 
-    @FXML
-    private TableColumn<Overview, String> statusCol;
 
     @FXML
-    private TableColumn<Overview, String> reportCol;
+    private TableColumn<Overview, String> statusCol;
 
     @FXML
     private TableColumn<Overview, String> locationCol;
@@ -64,8 +65,6 @@ public class GroupDetailsController implements Initializable {
 
     @FXML
     private ListView<Activity> acList;
-
-    private static final ArrayList<String> CONDITION = new ArrayList<>(Arrays.asList("Good", "Poor", "Damaged"));
 
 
     public static class Activity extends VBox {
@@ -149,6 +148,7 @@ public class GroupDetailsController implements Initializable {
 
 
         private Hyperlink barcode;
+        private StringProperty name;
         private StringProperty receivedBy;
         private StringProperty location;
         private StringProperty dateReturned;
@@ -166,8 +166,9 @@ public class GroupDetailsController implements Initializable {
         private StringProperty lastUpdated;
         private Label details;
 
-        public Overview(String barcode, String receivedBy, String location, String dateReturned, String dateComp, String dateScanned, String box, Boolean releasedToProd, String packedBy, String receiptReport, Integer count, String description, String employee, String condition, String status, String lastUpdated) {
+        public Overview(String barcode,String name, String receivedBy, String location, String dateReturned, String dateComp, String dateScanned, String box, Boolean releasedToProd, String packedBy, String receiptReport, Integer count, String description, String employee, String condition, String status, String lastUpdated) {
             this.barcode = new Hyperlink(barcode);
+            this.name = new SimpleStringProperty(name);
             this.receivedBy = new SimpleStringProperty(receivedBy);
             this.location = new SimpleStringProperty(location);
             this.dateReturned = new SimpleStringProperty(dateReturned);
@@ -198,6 +199,18 @@ public class GroupDetailsController implements Initializable {
 
         public void setBarcode(Hyperlink barcode) {
             this.barcode = barcode;
+        }
+
+        public String getName() {
+            return name.get();
+        }
+
+        public StringProperty nameProperty() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name.set(name);
         }
 
         public String getReceivedBy() {
@@ -438,6 +451,7 @@ public class GroupDetailsController implements Initializable {
 
         detailsCol.setCellValueFactory(new PropertyValueFactory<>("details"));
         idCol.setCellValueFactory(new PropertyValueFactory<>("barcode"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         countCol.setCellValueFactory(new PropertyValueFactory<>("count"));
         boxCol.setCellValueFactory(new PropertyValueFactory<>("box"));
         statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));

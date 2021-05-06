@@ -48,7 +48,7 @@ public class ProjectOverviewController implements Initializable {
 
     private ProjectCollectionTabController initCollection(String colName) {
         final Tab tab = new Tab(colName);
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/ProjectCollectionTab.fxml"));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXML/ProjectCollection.fxml"));
         try {
             final Parent parent = (Parent) loader.load();
             final ProjectCollectionTabController projectOverviewController = loader.getController();

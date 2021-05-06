@@ -32,7 +32,7 @@
             <Insets bottom="16.0" />
          </VBox.margin>
          <children>
-            <TitledPane fx:id="groupInfo" styleClass="inner-titled-pane" text="Box 25">
+            <TitledPane fx:id="groupInfo" styleClass="inner-titled-pane" text="Box 5">
                <content>
                   <HBox alignment="CENTER" maxHeight="72.0" minHeight="72.0" prefWidth="952.0" spacing="100.0">
                      <children>
@@ -46,7 +46,7 @@
                                     <Insets bottom="32.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <VBox translateY="-8.0">
+                              <VBox translateY="-12.0">
                                  <HBox.margin>
                                     <Insets left="16.0" />
                                  </HBox.margin>
@@ -56,7 +56,7 @@
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="groupProg" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="0/0">
+                                    <Text fx:id="groupProg" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="0/1" translateY="-2.0">
                                        <font>
                                           <Font size="21.0" />
                                        </font>
@@ -93,7 +93,7 @@
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="totalPages" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                    <Text fx:id="totalPages" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="2,222">
                                        <font>
                                           <Font size="21.0" />
                                        </font>
@@ -136,8 +136,9 @@
                                                    <columns>
                                                       <TableColumn fx:id="detailsCol" maxWidth="56.0" minWidth="56.0" prefWidth="56.0" />
                                                       <TableColumn fx:id="idCol" maxWidth="300.0" minWidth="48.0" prefWidth="200.0" text="Barcode" />
-                                                      <TableColumn fx:id="countCol" maxWidth="90.0" prefWidth="90.0" text="Images" />
-                                                      <TableColumn fx:id="boxCol" maxWidth="200.0" prefWidth="100.0" text="Box" />
+                                                      <TableColumn fx:id="nameCol" maxWidth="1000.0" minWidth="48.0" prefWidth="400.0" text="Name" />
+                                                      <TableColumn fx:id="boxCol" maxWidth="200.0" prefWidth="120.0" text="Box" />
+                                                      <TableColumn fx:id="countCol" maxWidth="120.0" prefWidth="120.0" text="Images" />
                                                       <TableColumn fx:id="conditionCol" maxWidth="300.0" minWidth="150.0" prefWidth="200.0" text="Condition" />
                                                       <TableColumn fx:id="statusCol" maxWidth="400.0" minWidth="200.0" prefWidth="300.0" text="Status" />
                                                       <TableColumn fx:id="locationCol" maxWidth="300.0" minWidth="150.0" prefWidth="200.0" text="Location" />

@@ -13,7 +13,7 @@
 .primaryBtn:hover{
   -fx-background-color: #DC2419;
 }
-
+.
 .primaryBtn{
     -fx-background-color: #bC2414;
     -fx-font-size:15;
@@ -49,7 +49,6 @@
 .thirdBtn:hover{
  -fx-background-color: rgba(16, 33, 250,1);
 }
-
 
 /*TITLED PANE*/
 
@@ -99,7 +98,7 @@
 }
 
 .outer-titled-pane > .title> .arrow-button .arrow{
-    -fx-background-color: white; 
+    -fx-background-color: white;
     -fx-padding:5;
     -fx-translate-x:8;
 }
@@ -139,6 +138,15 @@
 
 .combo-box .text{
    -fx-font-size:16;
+}
+
+.combo-box .cell:hover{
+   -fx-background-color: #07255e22;
+}
+
+.combo-box .cell:hover .check-box{
+    -fx-background-color:transparent;
+    -fx-text-fill: black;
 }
 
 
@@ -189,16 +197,6 @@
     -fx-focus-color: none;
 }
 
-.list-view{
-  -fx-box-border: none;
-  -fx-background-color:#fbfbfb;
-  -fx-selection-bar:rgba(248,248,248,.8);
-  -fx-selection-bar-non-focused: rgba(248,248,248,.8);
-  -fx-faint-focus-colore:none;
-  -fx-focus-color: none;
-  -fx-padding: 0 0 0 16;
-}
-
 .list-view .check-box{
   -fx-translate-x:-2;
   -fx-background-color:#fbfbfb;
@@ -229,35 +227,32 @@
     -fx-padding: 8;
 }
 
-
+.list-view .list-cell:last-cell{
+    -fx-border-color: #a0a0a0;
+    -fx-border-width: 0 0 .3 0;
+}
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
     -fx-background-color: white;
-    -fx-text-fill: black;
 }
 
-.list-cell .label{
-  -fx-font-size: 18;
+.list-cell .label .text{
+  -fx-font-size: 16;
   -fx-text-fill:black;
+  -fx-font-weight: bold;
 }
 
 .list-cell .button{
  -fx-background-color:transparent;
 }
 
-.list-cell .text-field{
-  -fx-background-color: #e0e0e0;
-}
-
-
 .list-cell .button .text{
   -fx-font-size: 14;
 }
 
- .list-cell:odd{
+.list-cell:odd{
   -fx-background:white;
   -fx-text-fill: black;
   -fx-border-width: 0 0 .2 0;
 }
-
 
