@@ -40,16 +40,30 @@
                                     <Insets left="16.0" />
                                  </HBox.margin>
                                  <children>
-                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em;" text="Boxes">
+                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em;" text="Groups">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="groupProg" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em;" text="1/5">
-                                       <font>
-                                          <Font size="21.0" />
-                                       </font>
-                                    </Text>
+                                    <HBox spacing="4.0">
+                                       <children>
+                                          <Text fx:id="groupsComp" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em;" text="1">
+                                             <font>
+                                                <Font size="21.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="groupProg1" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em;" text="/">
+                                             <font>
+                                                <Font size="21.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="groupsTotal" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em;" text="1">
+                                             <font>
+                                                <Font size="21.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
@@ -77,16 +91,30 @@
                                     <Insets left="16.0" />
                                  </HBox.margin>
                                  <children>
-                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em;" text="Reels">
+                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em;" text="Items">
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="itemProg" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em;" text="1/5">
-                                       <font>
-                                          <Font size="21.0" />
-                                       </font>
-                                    </Text>
+                                    <HBox>
+                                       <children>
+                                          <Text fx:id="itemsComp" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em;" text="1">
+                                             <font>
+                                                <Font size="21.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="itemProg1" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em;" text="/">
+                                             <font>
+                                                <Font size="21.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="itemTotal" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em;" text="1">
+                                             <font>
+                                                <Font size="21.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
@@ -149,12 +177,12 @@
                               <Insets left="8.0" right="8.0" />
                            </VBox.margin>
                            <children>
-                              <TableView2 fx:id="invTable" fixedCellSize="88.0" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" style="-fx-border-color: #07255e11; -fx-border-radius: 8;" stylesheets="@../CSS/jfoenix-components.css" VBox.vgrow="ALWAYS">
+                              <TableView2 fx:id="invTable" fixedCellSize="88.0" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" style="-fx-border-color: #07255e11; -fx-border-radius: 8;" stylesheets="@../CSS/jfoenix-components.css" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                                  <columns>
                                     <TableColumn2 fx:id="details" maxWidth="64.0" minWidth="64.0" prefWidth="64.0" />
                                     <TableColumn2 fx:id="barcode" maxWidth="300.0" minWidth="100.0" prefWidth="120.0" text="Barcode" />
                                     <TableColumn2 fx:id="name" maxWidth="-1.0" minWidth="100.0" prefWidth="400.0" text="Name" />
-                                    <TableColumn2 fx:id="pages" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Total" />
+                                    <TableColumn2 fx:id="total" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Total" />
                                     <TableColumn2 fx:id="status" maxWidth="-1.0" minWidth="100.0" prefWidth="200.0" text="Status" />
                                     <TableColumn2 fx:id="employees" maxWidth="-1.0" minWidth="300.0" prefWidth="-1.0" text="Employees" />
                                     <TableColumn2 fx:id="location" maxWidth="-1.0" minWidth="200.0" prefWidth="200.0" text="Location" />

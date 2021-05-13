@@ -155,7 +155,7 @@
                                     <TableColumn2 fx:id="barcode" maxWidth="300.0" minWidth="48.0" prefWidth="200.0" text="Barcode" />
                                     <TableColumn2 fx:id="name" maxWidth="1000.0" minWidth="100.0" prefWidth="600.0" text="Name" />
                                     <TableColumn2 fx:id="pallet" maxWidth="200.0" minWidth="100.0" prefWidth="100.0" text="Pallet" />
-                                    <TableColumn2 fx:id="pages" maxWidth="200.0" minWidth="100.0" prefWidth="100.0" text="Images" />
+                                    <TableColumn2 fx:id="total" maxWidth="200.0" minWidth="100.0" prefWidth="100.0" text="Images" />
                                     <TableColumn2 fx:id="status" maxWidth="1000.0" minWidth="100.0" prefWidth="200.0" text="Status" />
                                     <TableColumn2 fx:id="location" maxWidth="1000.0" minWidth="200.0" prefWidth="400.0" text="Location" />
                                  </columns>

@@ -17,7 +17,7 @@
 <?import org.controlsfx.control.tableview2.TableView2?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 
-<VBox fx:id="box" alignment="CENTER" spacing="8.0" style="-fx-background-color: #efefef;" stylesheets="@../CSS/ProjectSpecs_.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GroupDetailsController">
+<VBox fx:id="box" alignment="CENTER" spacing="8.0" style="-fx-background-color: #ececec;" stylesheets="@../CSS/ProjectSpecs_.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GroupDetailsController">
    <children>
       <HBox alignment="TOP_RIGHT">
          <children>
@@ -27,95 +27,149 @@
             <Insets right="16.0" />
          </VBox.margin>
       </HBox>
-      <VBox spacing="16.0" VBox.vgrow="ALWAYS">
+      <TabPane VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="16.0" />
          </VBox.margin>
-         <children>
-            <TitledPane fx:id="groupInfo" styleClass="inner-titled-pane" text="Box 5">
+         <tabs>
+            <Tab fx:id="groupTab" closable="false" text="Overview">
                <content>
-                  <HBox alignment="CENTER" maxHeight="72.0" minHeight="72.0" prefWidth="952.0" spacing="100.0">
+                  <VBox spacing="16.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="16.0">
-                           <children>
-                              <ImageView fitHeight="32.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../IMAGES/Group%2074.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets bottom="32.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <VBox translateY="-12.0">
-                                 <HBox.margin>
-                                    <Insets left="16.0" />
-                                 </HBox.margin>
+                        <TitledPane styleClass="inner-titled-pane" text="Overview">
+                           <content>
+                              <HBox alignment="CENTER" maxHeight="80.0" minHeight="80.0" spacing="100.0">
                                  <children>
-                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="Reels">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Text>
-                                    <Text fx:id="groupProg" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="0/1" translateY="-2.0">
-                                       <font>
-                                          <Font size="21.0" />
-                                       </font>
-                                    </Text>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                                       <children>
+                                          <ImageView fitHeight="36.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateY="-7.0">
+                                             <image>
+                                                <Image url="@../IMAGES/checklist.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets bottom="32.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <VBox translateY="-6.0">
+                                             <HBox.margin>
+                                                <Insets left="16.0" />
+                                             </HBox.margin>
+                                             <children>
+                                                <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Items">
+                                                   <font>
+                                                      <Font name="System Bold" size="16.0" />
+                                                   </font>
+                                                </Text>
+                                                <HBox spacing="4.0">
+                                                   <children>
+                                                      <Text fx:id="itemsComp" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="1">
+                                                         <font>
+                                                            <Font size="21.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="/">
+                                                         <font>
+                                                            <Font size="21.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <Text fx:id="itemsTotal" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="1">
+                                                         <font>
+                                                            <Font size="21.0" />
+                                                         </font>
+                                                      </Text>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets top="24.0" />
+                                       </HBox.margin>
+                                    </HBox>
+                                    <AnchorPane maxHeight="40.0" minHeight="40.0" opacity="0.66" prefWidth="1.0" style="-fx-background-color: gray;">
+                                       <HBox.margin>
+                                          <Insets bottom="24.0" />
+                                       </HBox.margin>
+                                    </AnchorPane>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                                       <children>
+                                          <ImageView fitHeight="43.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateY="-4.0">
+                                             <image>
+                                                <Image url="@../IMAGES/open-book.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets bottom="34.0" top="8.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <VBox translateY="2.0">
+                                             <HBox.margin>
+                                                <Insets left="16.0" />
+                                             </HBox.margin>
+                                             <children>
+                                                <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Images">
+                                                   <font>
+                                                      <Font name="System Bold" size="16.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="totalPages1" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="0" translateY="2.0">
+                                                   <font>
+                                                      <Font size="21.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets top="24.0" />
+                                       </HBox.margin>
+                                    </HBox>
+                                    <AnchorPane maxHeight="40.0" minHeight="40.0" opacity="0.66" prefWidth="1.0" style="-fx-background-color: gray;">
+                                       <HBox.margin>
+                                          <Insets bottom="24.0" />
+                                       </HBox.margin>
+                                    </AnchorPane>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                                       <children>
+                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateY="-8.0">
+                                             <image>
+                                                <Image url="@../IMAGES/employee.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets bottom="34.0" top="8.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <VBox translateY="2.0">
+                                             <HBox.margin>
+                                                <Insets left="16.0" />
+                                             </HBox.margin>
+                                             <children>
+                                                <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Employees">
+                                                   <font>
+                                                      <Font name="System Bold" size="16.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="totalEmps" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="0" translateY="2.0">
+                                                   <font>
+                                                      <Font size="21.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets top="24.0" />
+                                       </HBox.margin>
+                                    </HBox>
                                  </children>
-                              </VBox>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="8.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <AnchorPane minHeight="40.0" opacity="0.66" prefWidth="1.0" style="-fx-background-color: gray;">
-                           <HBox.margin>
-                              <Insets bottom="24.0" />
-                           </HBox.margin>
-                        </AnchorPane>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="16.0">
+                                 <padding>
+                                    <Insets left="32.0" right="32.0" />
+                                 </padding>
+                              </HBox>
+                           </content>
+                        </TitledPane>
+                        <VBox VBox.vgrow="ALWAYS">
                            <children>
-                              <ImageView fitHeight="43.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../IMAGES/open-book.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets bottom="34.0" top="8.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <VBox>
-                                 <HBox.margin>
-                                    <Insets left="16.0" />
-                                 </HBox.margin>
-                                 <children>
-                                    <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="Images">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Text>
-                                    <Text fx:id="totalPages" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" text="2,222">
-                                       <font>
-                                          <Font size="21.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets bottom="8.0" left="32.0" right="32.0" top="16.0" />
-                     </padding>
-                  </HBox>
-               </content>
-            </TitledPane>
-            <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-              <tabs>
-                <Tab text="Overview">
-                  <content>
-                        <VBox>
-                           <children>
-                              <TitledPane fx:id="createPane1" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" styleClass="outer-titled-pane" text="Reels" textFill="WHITE" VBox.vgrow="ALWAYS">
+                              <TitledPane fx:id="createPane1" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" styleClass="outer-titled-pane" text="Items" textFill="WHITE" VBox.vgrow="ALWAYS">
                                  <content>
                                     <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" spacing="16.0" style="-fx-background-color: #fbfbfb;">
                                        <children>
@@ -132,16 +186,18 @@
                                                 <Insets left="8.0" right="8.0" />
                                              </VBox.margin>
                                              <children>
-                                                <TableView2 fx:id="ovTable" fixedCellSize="70" focusTraversable="false" maxHeight="1.7976931348623157E308" rowHeaderVisible="true" rowHeaderWidth="60.0" style="-fx-border-color: #07255e11; -fx-border-radius: 8;" stylesheets="@../CSS/jfoenix-components.css" VBox.vgrow="ALWAYS">
+                                                <TableView2 fx:id="ovTable" fixedCellSize="64.0" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" stylesheets="@../CSS/jfoenix-components.css" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                                                    <columns>
-                                                      <TableColumn fx:id="detailsCol" maxWidth="56.0" minWidth="56.0" prefWidth="56.0" />
-                                                      <TableColumn fx:id="idCol" maxWidth="300.0" minWidth="48.0" prefWidth="200.0" text="Barcode" />
-                                                      <TableColumn fx:id="nameCol" maxWidth="1000.0" minWidth="48.0" prefWidth="400.0" text="Name" />
-                                                      <TableColumn fx:id="boxCol" maxWidth="200.0" prefWidth="120.0" text="Box" />
-                                                      <TableColumn fx:id="countCol" maxWidth="120.0" prefWidth="120.0" text="Images" />
-                                                      <TableColumn fx:id="conditionCol" maxWidth="300.0" minWidth="150.0" prefWidth="200.0" text="Condition" />
-                                                      <TableColumn fx:id="statusCol" maxWidth="400.0" minWidth="200.0" prefWidth="300.0" text="Status" />
-                                                      <TableColumn fx:id="locationCol" maxWidth="300.0" minWidth="150.0" prefWidth="200.0" text="Location" />
+                                                      <TableColumn fx:id="detailsCol" maxWidth="64.0" minWidth="64.0" prefWidth="64.0" resizable="false" />
+                                                      <TableColumn fx:id="compCol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Completed" />
+                                                      <TableColumn fx:id="nameCol" maxWidth="1000.0" minWidth="150.0" prefWidth="150.0" text="Name" />
+                                                      <TableColumn fx:id="totalcol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Total" />
+                                                      <TableColumn fx:id="nonFeedCol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Non_Feeder" />
+                                                      <TableColumn fx:id="typeCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Type" />
+                                                      <TableColumn fx:id="empCol" maxWidth="400.0" minWidth="150.0" prefWidth="150.0" styleClass="reg-table-cell" text="Employee" />
+                                                      <TableColumn fx:id="workstationCol" maxWidth="1000.0" minWidth="100.0" prefWidth="150.0" styleClass="reg-table-cell" text="Workstation" />
+                                                      <TableColumn fx:id="conditionCol" maxWidth="300.0" minWidth="150.0" prefWidth="200.0" styleClass="reg-table-cell" text="Condition" />
+                                                      <TableColumn fx:id="commentsCol" maxWidth="1000.0" minWidth="100.0" prefWidth="300.0" styleClass="reg-table-cell" text="Comments" />
                                                    </columns>
                                                 </TableView2>
                                              </children>
@@ -154,30 +210,30 @@
                                  </content>
                               </TitledPane>
                            </children>
-                           <padding>
-                              <Insets left="16.0" right="16.0" top="16.0" />
-                           </padding>
                         </VBox>
-                  </content>
-                </Tab>
-                  <Tab text="Activity">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <ListView fx:id="acList" fixedCellSize="124.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FEFEFE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </Tab>
-              </tabs>
-            </TabPane>
-         </children>
-         <padding>
-            <Insets left="16.0" right="16.0" />
-         </padding>
-      </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="16.0" right="16.0" top="16.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab fx:id="groupTab1" closable="false" text="Activity">
+               <content>
+                  <VBox spacing="16.0">
+                     <children>
+                        <ListView fx:id="acList1" fixedCellSize="124.0" style="-fx-background-color: #FEFEFE;" VBox.vgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets left="16.0" right="16.0" top="16.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
    </children>
    <padding>
-      <Insets bottom="16.0" top="16.0" />
+      <Insets bottom="16.0" top="8.0" />
    </padding>
 </VBox>

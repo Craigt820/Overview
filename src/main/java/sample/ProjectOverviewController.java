@@ -12,13 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import org.controlsfx.control.CheckComboBox;
+import sample.JavaBeans.Collection;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -53,6 +51,17 @@ public class ProjectOverviewController implements Initializable {
             final Parent parent = (Parent) loader.load();
             final ProjectCollectionTabController projectOverviewController = loader.getController();
             tab.setContent(parent);
+            MenuItem menu = new MenuItem("Refresh");
+            menu.setOnAction(e -> {
+                try {
+                    loader.setRoot(FXMLLoader.load(getClass().getResource("../FXML/ProjectCollection.fxml")));
+                    tab.setContent(loader.getRoot());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            });
+            tab.setContextMenu(new ContextMenu(menu));
             colTabPane.getTabs().add(tab);
             return projectOverviewController;
         } catch (IOException e) {

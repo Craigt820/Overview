@@ -1,10 +1,13 @@
-/* Buttons */
+.tooltip .text{
+  -fx-font-size: 0.80em;
+  -fx-fill: white;
+}
 
+/* Buttons */
 
 .setupBtn:pressed{
     -fx-background-color: yellow;
 }
-
 
 .secondaryBtn:hover{
   -fx-background-color: #063fb0;
@@ -52,17 +55,17 @@
 
 /*TITLED PANE*/
 
-
 .inner-titled-pane > .title {
-    -fx-background-color: #fbfbfb;
+    -fx-background-color: white;
     -fx-font-family:'Roboto medium';
-    -fx-font-size:16;
-    -fx-padding:8;
+    -fx-font-size:1.2em;
+    -fx-padding:8 0 8 4;
 }
 
 .inner-titled-pane > .title .text{
     -fx-fill:#0a3f80;
-    -fx-translate-x:12;
+    -fx-translate-x:8;
+    -fx-font-size:1.1em;
     -fx-font-weight:bold;
 }
 
@@ -70,25 +73,28 @@
 .inner-titled-pane .content{
    -fx-background-radius:6;
    -fx-border-color:none;
-   -fx-background-color: #fbfbfb;
+   -fx-border-width:0 .2 .2 .2;
+   -fx-background-color: white;
+   -fx-border-radius:6;
 }
 
 .outer-titled-pane > .title{
-    -fx-background-color: #0a3f80;
-    -fx-font-family:'Roboto medium';
-    -fx-font-size:16;
+    -fx-background-color: #07255e;
+    -fx-font-family:'Segoe UI Semibold';
+    -fx-font-weight:bold;
     -fx-padding: 4;
 }
 
 .outer-titled-pane > .title .text{
     -fx-text-fill:white;
-    -fx-translate-x:12;
+    -fx-translate-x:8;
+     -fx-font-size:1.1em;
 }
-
 
 .outer-titled-pane,
 .inner-titled-pane{
   -fx-background-radius:6;
+  -fx-border-radius:6;
 }
 
 .inner-titled-pane > .title> .arrow-button .arrow{
@@ -101,10 +107,6 @@
     -fx-background-color: white;
     -fx-padding:5;
     -fx-translate-x:8;
-}
-
-.label{
-  -fx-font-size:15;
 }
 
 .check-box{
@@ -151,7 +153,7 @@
 
 
 .tab-pane:top .tab-header-area .headers-region .tab:top .tab-container .tab-label .text{
-  -fx-font-size:14;
+  -fx-font-size:1em;
   -fx-font-weight: bold;
 }
 
@@ -167,92 +169,18 @@
  -fx-focus-color:none;
 }
 
-
 .tab-pane:top .tab-header-area .tab-header-background{
-  -fx-background-radius:6;
-  -fx-background-color:#07255e22;
-}
-
-.tab-pane:top .tab-header-area .headers-region .tab:top .tab-container .tab-close-button{
-  -fx-translate-x:4;
-  -fx-translate-y:-12;
+  -fx-background-color:#08264f45;
+  -fx-border-color:gray;
+  -fx-border-width:0 0 .4 0;
 }
 
 .text-area,
 .text-field{
    -fx-faint-focus-color: #063fb066;
    -fx-focus-color: #063fb066;
-   -fx-background-color:#efefef;
-   -fx-border-color: #e6e6e6;
+   -fx-background-color:transparent,transparent,transparent,#efefef;
    -fx-background-radius: 6;
    -fx-border-radius: 6;
-}
-
-.check-box .list-view{
-    -fx-box-border: none;
-    -fx-background-color:#fbfbfb;
-    -fx-selection-bar:#d0d0d0;
-    -fx-selection-bar-non-focused: #d0d0d0;
-    -fx-faint-focus-color:none;
-    -fx-focus-color: none;
-}
-
-.list-view .check-box{
-  -fx-translate-x:-2;
-  -fx-background-color:#fbfbfb;
-}
-
-.list-view .list-cell .button{
-  -fx-font-weight:bold;
-}
-
-.list-view .list-cell .hyperlink{
-   -fx-font-weight: bold;
-}
-
-.list-view .list-cell .label{
-   -fx-font-size:15;
-   -fx-padding:0 0 0 8;
-}
-
-.list-view  .list-cell:empty{
-    -fx-border-color:none;
-}
-
-.list-view .list-cell {
-    -fx-background-color:#fbfbfb;
-    -fx-text-fill: black;
-    -fx-border-color: #a0a0a0;
-    -fx-border-width: .3 0 0 0;
-    -fx-padding: 8;
-}
-
-.list-view .list-cell:last-cell{
-    -fx-border-color: #a0a0a0;
-    -fx-border-width: 0 0 .3 0;
-}
-
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: white;
-}
-
-.list-cell .label .text{
-  -fx-font-size: 16;
-  -fx-text-fill:black;
-  -fx-font-weight: bold;
-}
-
-.list-cell .button{
- -fx-background-color:transparent;
-}
-
-.list-cell .button .text{
-  -fx-font-size: 14;
-}
-
-.list-cell:odd{
-  -fx-background:white;
-  -fx-text-fill: black;
-  -fx-border-width: 0 0 .2 0;
 }
 

@@ -10,13 +10,14 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     public static ProjectOverviewController projectOverviewController;
+    public static final String CONN = "jdbc:mysql://192.168.1.147/Tracking?useSSL=false";
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        com.sun.javafx.util.Logging.getCSSLogger().setLevel(sun.util.logging.PlatformLogger.Level.OFF);
         Parent root = FXMLLoader.load(getClass().getResource("../FXML/ProjectOverview.fxml"));
         primaryStage.setTitle("");
         primaryStage.setScene(new Scene(root));
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

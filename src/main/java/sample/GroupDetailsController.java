@@ -1,22 +1,32 @@
 package sample;
 
-import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import org.controlsfx.control.tableview2.TableView2;
+import sample.JavaBeans.Group;
+import sample.JavaBeans.Item;
+import sample.utils.Utils;
 
+import java.awt.*;
 import java.net.URL;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+
+import static sample.Main.CONN;
 
 public class GroupDetailsController implements Initializable {
 
@@ -36,32 +46,42 @@ public class GroupDetailsController implements Initializable {
     private Label groupName;
 
     @FXML
-    private TableView2<Overview> ovTable;
+    private Tab groupTab;
 
     @FXML
-    private TableColumn<Overview, String> idCol;
+    private TableView2<Item> ovTable;
 
     @FXML
-    private TableColumn<Overview, String> nameCol;
+    private TableColumn<Item, String> nameCol;
 
     @FXML
-    private TableColumn<Overview, Integer> countCol;
+    private TableColumn<Item, Integer> totalcol;
 
     @FXML
-    private TableColumn<Overview, String> boxCol;
-
-
-    @FXML
-    private TableColumn<Overview, String> statusCol;
+    private TableColumn<Item, String> conditionCol;
 
     @FXML
-    private TableColumn<Overview, String> locationCol;
+    private TableColumn<Item, Label> detailsCol;
 
     @FXML
-    private TableColumn<Overview, String> conditionCol;
+    private TableColumn<Item, CheckBox> compCol;
 
     @FXML
-    private TableColumn<Overview, Label> detailsCol;
+    private TableColumn<Item, String> empCol;
+
+    @FXML
+    private TableColumn<Item, Integer> nonFeedCol;
+
+    @FXML
+    private TableColumn<Item, Label> typeCol;
+
+    @FXML
+    private TableColumn<Item, String> commentsCol;
+
+    @FXML
+    private TableColumn<Item, String> workstationCol;
+
+
 
     @FXML
     private ListView<Activity> acList;
@@ -144,321 +164,50 @@ public class GroupDetailsController implements Initializable {
 
     }
 
-    public static class Overview {
+    public ObservableList<? extends Item> getGroupItems(Group group) throws SQLException {
+        Connection connection = null;
+        ResultSet set = null;
+        PreparedStatement ps = null;
+        ObservableList<Item> group_items = FXCollections.observableArrayList();
 
+        try {
+            connection = DriverManager.getConnection(CONN, "User", "idi8tangos88admin");
+            ps = connection.prepareStatement("SELECT m.workstation,m.overridden,m.id,g.id as group_id, g.name group_name, m.name as item,m.non_feeder, m.completed, e.name as employee, c.name as collection, m.total, t.name as type,m.conditions,m.comments,m.started_On,m.completed_On FROM JIB002 m INNER JOIN employees e ON m.employee_id = e.id INNER JOIN sc_groups g ON m.group_id = g.id INNER JOIN item_types t ON m.type_id = t.id INNER JOIN sc_collections c ON m.collection_id = c.id WHERE group_id=" + group.getId() + "");
+            set = ps.executeQuery();
+            while (set.next()) {
+                    final Item item = new Item(set.getInt("m.id"), group.getCollection(), group, set.getString("item"), set.getInt("m.total"),set.getInt("m.non_feeder"),set.getString("type"), set.getInt("m.completed") == 1,set.getString("employee"), set.getString("m.comments"), set.getString("m.started_On"), set.getString("m.completed_On"), set.getString("m.workstation"), Utils.intToBoolean(set.getInt("m.overridden")));
+                String condition = set.getString("m.conditions");
+                if (condition != null && !condition.isEmpty()) {
+                    String[] splitConditions = condition.split(", ");
+                    item.getConditions().setAll(Arrays.asList(splitConditions));
+                }
+                group_items.add(item);
+            }
 
-        private Hyperlink barcode;
-        private StringProperty name;
-        private StringProperty receivedBy;
-        private StringProperty location;
-        private StringProperty dateReturned;
-        private StringProperty dateComp;
-        private StringProperty dateScanned;
-        private StringProperty box;
-        private BooleanProperty releasedToProd;
-        private StringProperty packedBy;
-        private StringProperty receiptReport;
-        private IntegerProperty count;
-        private StringProperty description;
-        private StringProperty employee;
-        private StringProperty condition;
-        private StringProperty status;
-        private StringProperty lastUpdated;
-        private Label details;
+        } catch (SQLException e) {
+            e.printStackTrace();
 
-        public Overview(String barcode,String name, String receivedBy, String location, String dateReturned, String dateComp, String dateScanned, String box, Boolean releasedToProd, String packedBy, String receiptReport, Integer count, String description, String employee, String condition, String status, String lastUpdated) {
-            this.barcode = new Hyperlink(barcode);
-            this.name = new SimpleStringProperty(name);
-            this.receivedBy = new SimpleStringProperty(receivedBy);
-            this.location = new SimpleStringProperty(location);
-            this.dateReturned = new SimpleStringProperty(dateReturned);
-            this.dateComp = new SimpleStringProperty(dateComp);
-            this.dateScanned = new SimpleStringProperty(dateScanned);
-            this.box = new SimpleStringProperty(box);
-            this.releasedToProd = new SimpleBooleanProperty(releasedToProd);
-            this.packedBy = new SimpleStringProperty(packedBy);
-            this.receiptReport = new SimpleStringProperty(receiptReport);
-            this.count = new SimpleIntegerProperty(count);
-            this.description = new SimpleStringProperty(description);
-            this.employee = new SimpleStringProperty(employee);
-            this.condition = new SimpleStringProperty(condition);
-            this.status = new SimpleStringProperty(status);
-            this.lastUpdated = new SimpleStringProperty(lastUpdated);
-            this.details = new Label();
-            this.details.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-            this.details.setGraphic(new ImageView(getClass().getResource("../IMAGES/info.png").toExternalForm()));
-            this.details.setTranslateX(-8);
-            this.details.setTooltip(new Tooltip("Details"));
-            this.details.setOnMousePressed(e -> {
-            });
+        } finally {
+            set.close();
+            ps.close();
+            connection.close();
         }
 
-        public Hyperlink getBarcode() {
-            return barcode;
-        }
-
-        public void setBarcode(Hyperlink barcode) {
-            this.barcode = barcode;
-        }
-
-        public String getName() {
-            return name.get();
-        }
-
-        public StringProperty nameProperty() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name.set(name);
-        }
-
-        public String getReceivedBy() {
-            return receivedBy.get();
-        }
-
-        public StringProperty receivedByProperty() {
-            return receivedBy;
-        }
-
-        public void setReceivedBy(String receivedBy) {
-            this.receivedBy.set(receivedBy);
-        }
-
-        public String getLocation() {
-            return location.get();
-        }
-
-        public StringProperty locationProperty() {
-            return location;
-        }
-
-        public void setLocation(String location) {
-            this.location.set(location);
-        }
-
-        public String getDateReturned() {
-            return dateReturned.get();
-        }
-
-        public StringProperty dateReturnedProperty() {
-            return dateReturned;
-        }
-
-        public void setDateReturned(String dateReturned) {
-            this.dateReturned.set(dateReturned);
-        }
-
-        public String getDateComp() {
-            return dateComp.get();
-        }
-
-        public StringProperty dateCompProperty() {
-            return dateComp;
-        }
-
-        public void setDateComp(String dateComp) {
-            this.dateComp.set(dateComp);
-        }
-
-        public String getDateScanned() {
-            return dateScanned.get();
-        }
-
-        public StringProperty dateScannedProperty() {
-            return dateScanned;
-        }
-
-        public void setDateScanned(String dateScanned) {
-            this.dateScanned.set(dateScanned);
-        }
-
-        public String getBox() {
-            return box.get();
-        }
-
-        public StringProperty boxProperty() {
-            return box;
-        }
-
-        public void setBox(String box) {
-            this.box.set(box);
-        }
-
-        public boolean isReleasedToProd() {
-            return releasedToProd.get();
-        }
-
-        public BooleanProperty releasedToProdProperty() {
-            return releasedToProd;
-        }
-
-        public void setReleasedToProd(boolean releasedToProd) {
-            this.releasedToProd.set(releasedToProd);
-        }
-
-        public String getPackedBy() {
-            return packedBy.get();
-        }
-
-        public StringProperty packedByProperty() {
-            return packedBy;
-        }
-
-        public void setPackedBy(String packedBy) {
-            this.packedBy.set(packedBy);
-        }
-
-        public String getReceiptReport() {
-            return receiptReport.get();
-        }
-
-        public StringProperty receiptReportProperty() {
-            return receiptReport;
-        }
-
-        public void setReceiptReport(String receiptReport) {
-            this.receiptReport.set(receiptReport);
-        }
-
-        public int getCount() {
-            return count.get();
-        }
-
-        public IntegerProperty countProperty() {
-            return count;
-        }
-
-        public void setCount(int count) {
-            this.count.set(count);
-        }
-
-        public String getDescription() {
-            return description.get();
-        }
-
-        public StringProperty descriptionProperty() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description.set(description);
-        }
-
-        public String getEmployee() {
-            return employee.get();
-        }
-
-        public StringProperty employeeProperty() {
-            return employee;
-        }
-
-        public void setEmployee(String employee) {
-            this.employee.set(employee);
-        }
-
-        public String getCondition() {
-            return condition.get();
-        }
-
-        public StringProperty conditionProperty() {
-            return condition;
-        }
-
-        public void setCondition(String condition) {
-            this.condition.set(condition);
-        }
-
-        public String getStatus() {
-            return status.get();
-        }
-
-        public StringProperty statusProperty() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status.set(status);
-        }
-
-        public String getLastUpdated() {
-            return lastUpdated.get();
-        }
-
-        public StringProperty lastUpdatedProperty() {
-            return lastUpdated;
-        }
-
-        public void setLastUpdated(String lastUpdated) {
-            this.lastUpdated.set(lastUpdated);
-        }
-
-        public Label getDetails() {
-            return details;
-        }
-
-        public void setDetails(Label details) {
-            this.details = details;
-        }
+        return group_items;
     }
-//        public Overview(String id, LocalDateTime dateScanned, LocalDateTime dateComp, int imgCount, String description, String employee, String status) {
-//            this.imgCount = imgCount;
-//            this.number = new Label();
-//            this.description = description;
-//            this.employee = employee;
-//            this.dateScanned = dateScanned;
-//            this.dateComp = dateComp;
-//            this.status = status;
-////            RowConstraints constraints = new RowConstraints();
-////            ColumnConstraints col1 = new ColumnConstraints();
-////            ColumnConstraints col2 = new ColumnConstraints();
-////            ColumnConstraints col3 = new ColumnConstraints();
-////            col1.setPercentWidth(50);
-////            col2.setPercentWidth(50);
-////            this.getColumnConstraints().addAll(col1, col2, col3);
-////            this.setVgap(16);
-////            this.setAlignment(Pos.CENTER);
-////            this.add(new Label("Status:  " + this.status), 0, 0);
-////            this.add(new Label("Employee:  " + this.employee), 0, 1);
-////            this.add(new Label("Description:  " + this.description), 0, 2);
-
-
-//    public Overview() {
-//    }
-//
-//    public Overview(String id, LocalDateTime timeStamp) {
-////            ColumnConstraints col1 = new ColumnConstraints();
-////            ColumnConstraints col2 = new ColumnConstraints();
-////            ColumnConstraints col3 = new ColumnConstraints();
-////            col1.setPercentWidth(50);
-////            col2.setPercentWidth(50);
-////            this.getColumnConstraints().addAll(col1, col2, col3);
-////            this.number = id;
-////            this.timeStamp = timeStamp;
-////            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-////            formatter.format(this.timeStamp);
-////            Label objIDLbl = new Label(this.number);
-////            objIDLbl.setStyle("-fx-font-weight:bold;");
-////            this.add(objIDLbl, 0, 0);
-////            Label timeStampLbl = new Label("Last Updated: " + this.timeStamp.format(formatter));
-////            timeStampLbl.setStyle("-fx-font-size:13;");
-////            this.add(timeStampLbl, 1, 0);
-//    }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         detailsCol.setCellValueFactory(new PropertyValueFactory<>("details"));
-        idCol.setCellValueFactory(new PropertyValueFactory<>("barcode"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        countCol.setCellValueFactory(new PropertyValueFactory<>("count"));
-        boxCol.setCellValueFactory(new PropertyValueFactory<>("box"));
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-//        reportCol.setCellValueFactory(new PropertyValueFactory<>("report"));
-        locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-        conditionCol.setCellValueFactory(new PropertyValueFactory<>("condition"));
-
+        totalcol.setCellValueFactory(new PropertyValueFactory<>("total"));
+        conditionCol.setCellValueFactory(new PropertyValueFactory<>("conditions"));
+        compCol.setCellValueFactory(new PropertyValueFactory<>("completed"));
+        empCol.setCellValueFactory(new PropertyValueFactory<>("employee"));
+        nonFeedCol.setCellValueFactory(new PropertyValueFactory<>("nonFeeder"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        commentsCol.setCellValueFactory(new PropertyValueFactory<>("comments"));
+        workstationCol.setCellValueFactory(new PropertyValueFactory<>("workstation"));
     }
 
     public Label getClose() {
@@ -482,12 +231,16 @@ public class GroupDetailsController implements Initializable {
         this.groupName = groupName;
     }
 
-    public TableView2<Overview> getOvTable() {
+    public TableView2<Item> getOvTable() {
         return ovTable;
     }
 
     public ListView<Activity> getAcList() {
         return acList;
+    }
+
+    public Tab getGroupTab() {
+        return groupTab;
     }
 
 }
