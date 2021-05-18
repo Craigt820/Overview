@@ -1,5 +1,7 @@
+/* Tool Tip */
+
 .tooltip .text{
-  -fx-font-size: 0.80em;
+  -fx-font-size: 1.2em;
   -fx-fill: white;
 }
 
@@ -65,7 +67,7 @@
 .inner-titled-pane > .title .text{
     -fx-fill:#0a3f80;
     -fx-translate-x:8;
-    -fx-font-size:1.1em;
+    -fx-font-size:1.368em;
     -fx-font-weight:bold;
 }
 
@@ -88,7 +90,7 @@
 .outer-titled-pane > .title .text{
     -fx-text-fill:white;
     -fx-translate-x:8;
-     -fx-font-size:1.1em;
+    -fx-font-size:1.3em;
 }
 
 .outer-titled-pane,
@@ -98,8 +100,8 @@
 }
 
 .inner-titled-pane > .title> .arrow-button .arrow{
-  -fx-background-color:#0a3f80;
- -fx-padding:5;
+    -fx-background-color:#0a3f80;
+    -fx-padding:5;
     -fx-translate-x:8;
 }
 
@@ -109,48 +111,7 @@
     -fx-translate-x:8;
 }
 
-.check-box{
-  -jfx-checked-color:#0b0086;
-  -fx-text-fill:white;
-  -fx-translate-x: 16;
-  -fx-padding:2;
-}
-
-.check-box .box{
-   -fx-pref-height:16;
-   -fx-background-color:#fbfbfb;
-}
-
-.check-box .box .mark{
-  -fx-scale-x: .8;
-  -fx-scale-y: .8;
-}
-
-.check-box:determinate .text{
-  -fx-font-size:16;
-  -fx-translate-x: 8;
-}
-
-.combo-box{
-  -fx-background-color:white;
-  -fx-border-color: gray;
-  -fx-border-width: .3;
-  -fx-border-radius: 6;
-}
-
-.combo-box .text{
-   -fx-font-size:16;
-}
-
-.combo-box .cell:hover{
-   -fx-background-color: #07255e22;
-}
-
-.combo-box .cell:hover .check-box{
-    -fx-background-color:transparent;
-    -fx-text-fill: black;
-}
-
+/* Tab Pane */
 
 .tab-pane:top .tab-header-area .headers-region .tab:top .tab-container .tab-label .text{
   -fx-font-size:1em;
@@ -174,6 +135,8 @@
   -fx-border-color:gray;
   -fx-border-width:0 0 .4 0;
 }
+
+/* Fields */
 
 .text-area,
 .text-field{

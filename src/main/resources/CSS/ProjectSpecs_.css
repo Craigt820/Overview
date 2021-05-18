@@ -1,10 +1,9 @@
 /* Tool Tip */
 
 .tooltip .text{
-  -fx-font-size: 0.80em;
+  -fx-font-size: 1.2em;
   -fx-fill: white;
 }
-
 
 /* Buttons */
 
@@ -68,7 +67,7 @@
 .inner-titled-pane > .title .text{
     -fx-fill:#0a3f80;
     -fx-translate-x:8;
-    -fx-font-size:1.1em;
+    -fx-font-size:1.368em;
     -fx-font-weight:bold;
 }
 
@@ -91,7 +90,7 @@
 .outer-titled-pane > .title .text{
     -fx-text-fill:white;
     -fx-translate-x:8;
-     -fx-font-size:1.1em;
+    -fx-font-size:1.3em;
 }
 
 .outer-titled-pane,
@@ -101,8 +100,8 @@
 }
 
 .inner-titled-pane > .title> .arrow-button .arrow{
-  -fx-background-color:#0a3f80;
- -fx-padding:5;
+    -fx-background-color:#0a3f80;
+    -fx-padding:5;
     -fx-translate-x:8;
 }
 

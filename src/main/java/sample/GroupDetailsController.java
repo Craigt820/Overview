@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import org.apache.commons.dbutils.DbUtils;
 import org.controlsfx.control.tableview2.TableView2;
 import sample.JavaBeans.Group;
 import sample.JavaBeans.Item;
@@ -24,6 +25,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import static sample.Main.CONN;
@@ -80,7 +82,6 @@ public class GroupDetailsController implements Initializable {
 
     @FXML
     private TableColumn<Item, String> workstationCol;
-
 
 
     @FXML
@@ -175,7 +176,7 @@ public class GroupDetailsController implements Initializable {
             ps = connection.prepareStatement("SELECT m.workstation,m.overridden,m.id,g.id as group_id, g.name group_name, m.name as item,m.non_feeder, m.completed, e.name as employee, c.name as collection, m.total, t.name as type,m.conditions,m.comments,m.started_On,m.completed_On FROM JIB002 m INNER JOIN employees e ON m.employee_id = e.id INNER JOIN sc_groups g ON m.group_id = g.id INNER JOIN item_types t ON m.type_id = t.id INNER JOIN sc_collections c ON m.collection_id = c.id WHERE group_id=" + group.getId() + "");
             set = ps.executeQuery();
             while (set.next()) {
-                    final Item item = new Item(set.getInt("m.id"), group.getCollection(), group, set.getString("item"), set.getInt("m.total"),set.getInt("m.non_feeder"),set.getString("type"), set.getInt("m.completed") == 1,set.getString("employee"), set.getString("m.comments"), set.getString("m.started_On"), set.getString("m.completed_On"), set.getString("m.workstation"), Utils.intToBoolean(set.getInt("m.overridden")));
+                final Item item = new Item(set.getInt("m.id"), group.getCollection(), group, set.getString("item"), set.getInt("m.total"), set.getInt("m.non_feeder"), set.getString("type"), set.getInt("m.completed") == 1, set.getString("employee"), set.getString("m.comments"), set.getString("m.started_On"), set.getString("m.completed_On"), set.getString("m.workstation"), Utils.intToBoolean(set.getInt("m.overridden")));
                 String condition = set.getString("m.conditions");
                 if (condition != null && !condition.isEmpty()) {
                     String[] splitConditions = condition.split(", ");
@@ -188,9 +189,9 @@ public class GroupDetailsController implements Initializable {
             e.printStackTrace();
 
         } finally {
-            set.close();
-            ps.close();
-            connection.close();
+            DbUtils.closeQuietly(set);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(connection);
         }
 
         return group_items;
@@ -203,6 +204,12 @@ public class GroupDetailsController implements Initializable {
         totalcol.setCellValueFactory(new PropertyValueFactory<>("total"));
         conditionCol.setCellValueFactory(new PropertyValueFactory<>("conditions"));
         compCol.setCellValueFactory(new PropertyValueFactory<>("completed"));
+        compCol.setComparator(new Comparator<CheckBox>() {
+            @Override
+            public int compare(CheckBox o1, CheckBox o2) {
+                return Boolean.compare(o1.isSelected(), o2.isSelected());
+            }
+        });
         empCol.setCellValueFactory(new PropertyValueFactory<>("employee"));
         nonFeedCol.setCellValueFactory(new PropertyValueFactory<>("nonFeeder"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
