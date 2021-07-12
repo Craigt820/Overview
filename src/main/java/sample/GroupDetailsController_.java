@@ -36,9 +36,7 @@ public class GroupDetailsController_ implements Initializable {
     @FXML
     private ListView<Activity> acList;
 
-
     private static final ArrayList<String> CONDITION = new ArrayList<>(Arrays.asList("Good","Poor","Damaged"));
-
 
     public static class Activity extends VBox {
         private String objID;

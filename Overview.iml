@@ -14,6 +14,7 @@
     <orderEntry type="library" name="commons-codec-1.14" level="project" />
     <orderEntry type="library" name="commons-lang3-3.10" level="project" />
     <orderEntry type="library" name="mysql-connector-java-8.0.21" level="project" />
+    <orderEntry type="library" name="joda-time-2.10" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.12.0" level="project" />
     <orderEntry type="library" name="Maven: com.jfoenix:jfoenix:8.0.10" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.23" level="project" />
@@ -21,6 +22,7 @@
     <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:8.40.18" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-collections4:4.4" level="project" />
     <orderEntry type="library" name="Maven: commons-dbutils:commons-dbutils:1.7" level="project" />
-    <orderEntry type="library" name="joda-time-2.10" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.clerezza.ext:org.json.simple:0.4" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1" level="project" />
   </component>
 </module>

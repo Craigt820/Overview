@@ -1,20 +1,24 @@
 package sample.JavaBeans;
 
 
+import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SearchableComboBox;
 import sample.GroupDetailsController;
+import sample.utils.Utils;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static sample.Main.projectOverviewController;
@@ -33,10 +37,10 @@ public class Group<T extends Control> {
     private StringProperty completed_On;
     private CheckComboBox<String> employee;
     private IntegerProperty total;
-    private Label details;
-    private ObservableList itemList;
+    private ImageView details;
+    private ObservableList<Item> itemList;
 
-    public Group(int id, Collection collection, String barcode, String name, ArrayList<String> emps, String status, String location, String started_On, String completed_On, int total) {
+    public Group(int id, Collection collection, String barcode, String name, List<String> emps, String status, String location, String started_On, String completed_On, int total) {
         this.id = id;
         this.collection = collection;
         this.barcode = new Hyperlink(barcode == null || barcode.isEmpty() ? barcode = "N/A" : barcode);
@@ -45,9 +49,11 @@ public class Group<T extends Control> {
         this.employee = new CheckComboBox<String>();
         this.employee.getItems().addAll(EMPLOYEES);
         this.employee.setMaxWidth(600);
-        emps.forEach(e -> {
-            this.employee.getCheckModel().check(e);
-        });
+        if (emps != null) {
+            emps.forEach(e -> {
+                this.employee.getCheckModel().check(e);
+            });
+        }
         this.total = new SimpleIntegerProperty(total);
         this.started_On = new SimpleStringProperty(started_On);
         this.completed_On = new SimpleStringProperty(completed_On);
@@ -58,58 +64,11 @@ public class Group<T extends Control> {
         this.location.setMaxHeight(40);
         this.status = new ComboBox<>(FXCollections.observableArrayList(STATUS));
         this.status.setMaxWidth(600);
-        ImageView view = new ImageView(getClass().getResource("/IMAGES/info.png").toExternalForm());
-        view.setFitHeight(24);
-        view.setFitWidth(24);
         this.status.getSelectionModel().select(status);
-        this.details = new Label();
-        this.details.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        this.details.setGraphic(view);
-        this.details.getGraphic().prefHeight(8);
-        this.details.getGraphic().prefWidth(8);
-        this.details.setTranslateX(-8);
-        this.details.setTooltip(new Tooltip("Details"));
-        this.details.setOnMousePressed(e -> {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/GroupDetails.fxml"));
-            try {
-                VBox box = loader.load();
-                projectOverviewController.getGroupDetailDrawer().setSidePane(box);
-                projectOverviewController.getGroupDetailDrawer().setDefaultDrawerSize(root.getWidth());
-                projectOverviewController.getGroupDetailDrawer().setMinWidth(root.getWidth());
-                projectOverviewController.getGroupDetailDrawer().setMinHeight(root.getHeight());
-                GroupDetailsController groupDetailsController = loader.getController();
-                groupDetailsController.getGroupTab().setText(this.name.get());
-//                GroupDetailsController.Activity b1 = new GroupDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Selected");
-//                GroupDetailsController.Activity b2 = new GroupDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Being Scanned");
-//                GroupDetailsController.Activity b3 = new GroupDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Completed");
-//                GroupDetailsController.Activity b4 = new GroupDetailsController.Activity("#84333", LocalDateTime.now(), "Cindy M.", "Item Edited");
-//                groupDetailsController.getAcList().getItems().addAll(b1, b2, b3, b4);
-                CompletableFuture.runAsync(() -> {
-                    try {
-                        ProgressIndicator indicator = new ProgressIndicator();
-                        groupDetailsController.getOvTable().setPlaceholder(indicator);
-                        groupDetailsController.getOvTable().getPlaceholder().setStyle("-fx-size:20;");
-                        this.itemList = groupDetailsController.getGroupItems(this);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                }).thenRunAsync(() -> {
-                    groupDetailsController.getOvTable().getItems().addAll(this.itemList);
-                });
-
-                groupDetailsController.getClose().setOnMouseClicked(e3 -> {
-                    projectOverviewController.getGroupDetailDrawer().close();
-                    projectOverviewController.getGroupDetailDrawer().setOnDrawerClosed(e4 -> {
-                        projectOverviewController.getGroupDetailDrawer().setPrefWidth(0);
-                        projectOverviewController.getGroupDetailDrawer().setMinWidth(0);
-                    });
-                });
-                projectOverviewController.getGroupDetailDrawer().open();
-
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            }
-        });
+        this.details = new ImageView(getClass().getResource("/IMAGES/info.png").toExternalForm());
+        this.details.setFitHeight(24);
+        this.details.setFitWidth(24);
+        this.details.setPickOnBounds(true);
     }
 
     public int getId() {
@@ -208,15 +167,15 @@ public class Group<T extends Control> {
         this.total.set(total);
     }
 
-    public Label getDetails() {
+    public ImageView getDetails() {
         return details;
     }
 
-    public void setDetails(Label details) {
+    public void setDetails(ImageView details) {
         this.details = details;
     }
 
-    public ObservableList getItemList() {
+    public ObservableList<Item> getItemList() {
         return itemList;
     }
 

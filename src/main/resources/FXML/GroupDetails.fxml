@@ -47,32 +47,32 @@
                                                 <Image url="@../IMAGES/checklist.png" />
                                              </image>
                                              <HBox.margin>
-                                                <Insets bottom="32.0" />
+                                                <Insets bottom="32.0" top="10.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox translateY="-6.0">
+                                          <VBox spacing="2.0" translateY="-10.0">
                                              <HBox.margin>
-                                                <Insets left="16.0" />
+                                                <Insets left="16.0" top="8.0" />
                                              </HBox.margin>
                                              <children>
-                                                <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Items">
+                                                <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.2em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Items">
                                                    <font>
                                                       <Font name="System Bold" size="16.0" />
                                                    </font>
                                                 </Text>
                                                 <HBox spacing="4.0">
                                                    <children>
-                                                      <Text fx:id="itemsComp" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="1">
+                                                      <Text fx:id="itemsComp" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.368em; -fx-font-weight: regular;" text="1">
                                                          <font>
                                                             <Font size="21.0" />
                                                          </font>
                                                       </Text>
-                                                      <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="/">
+                                                      <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.368em; -fx-font-weight: regular;" text="/">
                                                          <font>
                                                             <Font size="21.0" />
                                                          </font>
                                                       </Text>
-                                                      <Text fx:id="itemsTotal" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="1">
+                                                      <Text fx:id="itemsTotal" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.368em; -fx-font-weight: regular;" text="1">
                                                          <font>
                                                             <Font size="21.0" />
                                                          </font>
@@ -83,7 +83,7 @@
                                           </VBox>
                                        </children>
                                        <HBox.margin>
-                                          <Insets top="24.0" />
+                                          <Insets />
                                        </HBox.margin>
                                     </HBox>
                                     <AnchorPane maxHeight="40.0" minHeight="40.0" opacity="0.66" prefWidth="1.0" style="-fx-background-color: gray;">
@@ -98,20 +98,20 @@
                                                 <Image url="@../IMAGES/open-book.png" />
                                              </image>
                                              <HBox.margin>
-                                                <Insets bottom="34.0" top="8.0" />
+                                                <Insets bottom="34.0" top="10.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox translateY="2.0">
+                                          <VBox spacing="2.0" translateY="-7.0">
                                              <HBox.margin>
-                                                <Insets left="16.0" />
+                                                <Insets left="16.0" top="8.0" />
                                              </HBox.margin>
                                              <children>
-                                                <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Images">
+                                                <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.2em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Images">
                                                    <font>
                                                       <Font name="System Bold" size="16.0" />
                                                    </font>
                                                 </Text>
-                                                <Text fx:id="totalPages1" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="0" translateY="2.0">
+                                                <Text fx:id="totalPages" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.368em; -fx-font-weight: regular;" text="0">
                                                    <font>
                                                       <Font size="21.0" />
                                                    </font>
@@ -120,7 +120,7 @@
                                           </VBox>
                                        </children>
                                        <HBox.margin>
-                                          <Insets top="24.0" />
+                                          <Insets />
                                        </HBox.margin>
                                     </HBox>
                                     <AnchorPane maxHeight="40.0" minHeight="40.0" opacity="0.66" prefWidth="1.0" style="-fx-background-color: gray;">
@@ -135,29 +135,44 @@
                                                 <Image url="@../IMAGES/employee.png" />
                                              </image>
                                              <HBox.margin>
-                                                <Insets bottom="34.0" top="8.0" />
+                                                <Insets bottom="34.0" top="10.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox translateY="2.0">
+                                          <VBox spacing="2.0" translateY="-7.0">
                                              <HBox.margin>
                                                 <Insets left="16.0" />
                                              </HBox.margin>
                                              <children>
-                                                <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.1em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Employees">
-                                                   <font>
-                                                      <Font name="System Bold" size="16.0" />
-                                                   </font>
-                                                </Text>
-                                                <Text fx:id="totalEmps" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.3em; -fx-font-weight: regular;" text="0" translateY="2.0">
+                                                <HBox>
+                                                   <children>
+                                                      <Text fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.2em; -fx-font-weight: bold; -fx-font-family: Segoe Semibold;" text="Employees">
+                                                         <font>
+                                                            <Font name="System Bold" size="16.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <ImageView fx:id="empDetails" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../IMAGES/info.png" />
+                                                         </image>
+                                                         <HBox.margin>
+                                                            <Insets left="8.0" top="2.0" />
+                                                         </HBox.margin>
+                                                      </ImageView>
+                                                   </children>
+                                                </HBox>
+                                                <Text fx:id="totalEmps" fill="#07255e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.368em; -fx-font-weight: regular;" text="0">
                                                    <font>
                                                       <Font size="21.0" />
                                                    </font>
                                                 </Text>
                                              </children>
+                                             <padding>
+                                                <Insets top="8.0" />
+                                             </padding>
                                           </VBox>
                                        </children>
                                        <HBox.margin>
-                                          <Insets top="24.0" />
+                                          <Insets />
                                        </HBox.margin>
                                     </HBox>
                                  </children>
@@ -173,7 +188,7 @@
                                  <content>
                                     <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" spacing="16.0" style="-fx-background-color: #fbfbfb;">
                                        <children>
-                                          <CustomTextField fx:id="invSearch" prefHeight="50.0" prefWidth="854.0" promptText="Search" style="-fx-border-color: #efefef;">
+                                          <CustomTextField fx:id="invSearch" prefHeight="50.0" promptText="Search" style="-fx-border-color: #efefef;">
                                              <VBox.margin>
                                                 <Insets left="8.0" right="8.0" />
                                              </VBox.margin>
@@ -186,18 +201,19 @@
                                                 <Insets left="8.0" right="8.0" />
                                              </VBox.margin>
                                              <children>
-                                                <TableView2 fx:id="ovTable" fixedCellSize="64.0" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" stylesheets="@../CSS/jfoenix-components.css" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                                                <TableView2 fx:id="ovTable" fixedCellSize="56.0" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" stylesheets="@../CSS/jfoenix-components.css" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                                                    <columns>
                                                       <TableColumn fx:id="detailsCol" maxWidth="64.0" minWidth="64.0" prefWidth="64.0" resizable="false" />
-                                                      <TableColumn fx:id="compCol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Completed" />
-                                                      <TableColumn fx:id="nameCol" maxWidth="1000.0" minWidth="150.0" prefWidth="150.0" text="Name" />
-                                                      <TableColumn fx:id="totalcol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Total" />
-                                                      <TableColumn fx:id="nonFeedCol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Non_Feeder" />
-                                                      <TableColumn fx:id="typeCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Type" />
-                                                      <TableColumn fx:id="empCol" maxWidth="400.0" minWidth="150.0" prefWidth="150.0" styleClass="reg-table-cell" text="Employee" />
-                                                      <TableColumn fx:id="workstationCol" maxWidth="1000.0" minWidth="100.0" prefWidth="150.0" styleClass="reg-table-cell" text="Workstation" />
-                                                      <TableColumn fx:id="conditionCol" maxWidth="300.0" minWidth="150.0" prefWidth="200.0" styleClass="reg-table-cell" text="Condition" />
-                                                      <TableColumn fx:id="commentsCol" maxWidth="1000.0" minWidth="100.0" prefWidth="300.0" styleClass="reg-table-cell" text="Comments" />
+                                                      <TableColumn fx:id="compCol" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Completed" />
+                                                      <TableColumn fx:id="idCol" maxWidth="80.0" minWidth="80.0" text="ID" />
+                                                      <TableColumn fx:id="nameCol" maxWidth="400.0" minWidth="200.0" prefWidth="200.0" text="Name" />
+                                                      <TableColumn fx:id="typeCol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Type" />
+                                                      <TableColumn fx:id="totalcol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Total" />
+                                                      <TableColumn fx:id="nonFeedCol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Non_Feeder" />
+                                                      <TableColumn fx:id="empCol" maxWidth="400.0" minWidth="150.0" prefWidth="150.0" text="Employee" />
+                                                      <TableColumn fx:id="workstationCol" maxWidth="1000.0" minWidth="150.0" prefWidth="150.0" text="Workstation" />
+                                                      <TableColumn fx:id="conditionCol" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="Condition" />
+                                                      <TableColumn fx:id="commentsCol" maxWidth="1000.0" minWidth="100.0" prefWidth="300.0" text="Comments" />
                                                    </columns>
                                                 </TableView2>
                                              </children>

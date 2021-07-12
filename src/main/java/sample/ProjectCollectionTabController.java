@@ -1,7 +1,7 @@
 package sample;
 
-import impl.org.controlsfx.skin.CheckComboBoxSkin;
 import impl.org.controlsfx.skin.SearchableComboBoxSkin;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -9,14 +9,16 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import org.apache.commons.collections4.map.SingletonMap;
 import org.apache.commons.dbutils.DbUtils;
 import org.controlsfx.control.CheckComboBox;
@@ -27,28 +29,37 @@ import org.controlsfx.control.textfield.CustomTextField;
 import sample.JavaBeans.Collection;
 import sample.JavaBeans.Group;
 import sample.utils.Comparators;
+import sample.utils.DBUtils;
 import sample.utils.Utils;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.text.ParseException;
 import java.time.*;
 import java.util.*;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.DoubleAdder;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static sample.Main.CONN;
+import static sample.ConnectionHandler.createDBConnection;
+import static sample.Main.projectOverviewController;
 import static sample.utils.Utils.dateTextFormatter;
 
-public class ProjectCollectionTabController implements Initializable {
+public class ProjectCollectionTabController extends DBUtils<Group> implements Initializable {
 
     @FXML
     private VBox root;
 
     @FXML
     private Text totalPages, totalEmps;
+
+    @FXML
+    private ImageView empDetails;
 
     @FXML
     private Text itemsComp, itemsTotal;
@@ -87,16 +98,20 @@ public class ProjectCollectionTabController implements Initializable {
     private TableColumn2<Group, Integer> total;
 
     @FXML
-    private TableColumn2<Group, Label> details;
+    private TableColumn2<Group, ImageView> details;
+
+    private ProjectCollectionTabController controller;
 
     private sample.JavaBeans.Collection collection;
 
     public static final ArrayList<String> STATUS = new ArrayList<>(Arrays.asList("Inactive", "Prepping", "Scanning", "Cropping", "QC", "Shipment", "Completed"));
+    public static ObservableList<String> CONDITION;
     public static ObservableList<String> EMPLOYEES;
 
     static {
         try {
             EMPLOYEES = getEmployees();
+            CONDITION = getConditions();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -109,8 +124,8 @@ public class ProjectCollectionTabController implements Initializable {
         SingletonMap<Integer, Integer> singletonMap = null;
 
         try {
-            connection = DriverManager.getConnection(CONN, "User", "idi8tangos88admin");
-            ps = connection.prepareStatement("SELECT COUNT(total) as totalItems FROM tracking.jib002 union ALL select count(total) as compItems from tracking.jib002 Where completed=1 LIMIT 2");
+            connection = createDBConnection();
+            ps = connection.prepareStatement("SELECT COUNT(total) as totalItems FROM `" + ProjectOverviewController.job.getName() + "` union ALL select count(total) as compItems from `" + ProjectOverviewController.job.getName() + "` Where completed=1 LIMIT 2");
             set = ps.executeQuery();
             while (set.next()) {
                 int totalItems = set.getInt("totalItems");
@@ -130,6 +145,30 @@ public class ProjectCollectionTabController implements Initializable {
         return singletonMap;
     }
 
+    private static ObservableList<String> getConditions() throws SQLException {
+        Connection connection = null;
+        ResultSet set = null;
+        PreparedStatement ps = null;
+        ObservableList<String> employees = FXCollections.observableArrayList();
+
+        try {
+            connection = createDBConnection();
+            ps = connection.prepareStatement("SELECT name from item_condition");
+            set = ps.executeQuery();
+            while (set.next()) {
+                employees.add(set.getString("name"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            set.close();
+            ps.close();
+            connection.close();
+        }
+        return employees;
+    }
+
     private static ObservableList<String> getEmployees() throws SQLException {
         Connection connection = null;
         ResultSet set = null;
@@ -137,7 +176,7 @@ public class ProjectCollectionTabController implements Initializable {
         ObservableList<String> employees = FXCollections.observableArrayList();
 
         try {
-            connection = DriverManager.getConnection(CONN, "User", "idi8tangos88admin");
+            connection = createDBConnection();
             ps = connection.prepareStatement("SELECT id,name,dept_id,roll_id,loc_id from employees");
             set = ps.executeQuery();
             while (set.next()) {
@@ -160,8 +199,8 @@ public class ProjectCollectionTabController implements Initializable {
         PreparedStatement ps = null;
         ObservableList<Employee> emps = FXCollections.observableArrayList();
         try {
-            connection = DriverManager.getConnection(CONN, "User", "idi8tangos88admin");
-            ps = connection.prepareStatement("SELECT distinct employees as emps,SUM(total) as sumTotal FROM tracking.sc_groups WHERE job_id=5 GROUP BY employees;");
+            connection = createDBConnection();
+            ps = connection.prepareStatement("SELECT DISTINCT e.name as emps,SUM(total) as sumTotal FROM `" + ProjectOverviewController.job.getName() + "_g` g INNER JOIN employees e ON g.employee = e.id GROUP BY employee;");
             set = ps.executeQuery();
             while (set.next()) {
                 emps.add(new Employee(set.getString("emps"), set.getInt("sumTotal")));
@@ -184,12 +223,16 @@ public class ProjectCollectionTabController implements Initializable {
         ObservableList<Group> groups = FXCollections.observableArrayList();
 
         try {
-            connection = DriverManager.getConnection(CONN, "User", "idi8tangos88admin");
-            ps = connection.prepareStatement("SELECT g.id,p.job_id,g.barcode,g.name,g.total,gs.name,g.collection_id,g.employees,g.scanned,g.started_On,g.completed_On FROM sc_groups g INNER JOIN projects p ON g.job_id=p.id INNER JOIN sc_group_status gs ON g.status_id=gs.id WHERE p.job_id=?");
-            ps.setString(1, "JIB002");
+            connection = createDBConnection();
+            ps = connection.prepareStatement("SELECT g.id,g.barcode,g.name,g.total,gs.name,g.collection_id,e.name,g.scanned,g.started_On,g.completed_On FROM `" + ProjectOverviewController.job.getName() + "_g` g LEFT JOIN sc_group_status gs ON g.status_id=gs.id LEFT JOIN employees e ON g.employee = e.id");
             set = ps.executeQuery();
             while (set.next()) {
-                Group group = new Group(set.getInt("id"), collection, set.getString("barcode"), set.getString("name"), new ArrayList<String>(Arrays.asList(set.getString("employees").split(","))), set.getString("gs.name"), "", set.getString("g.started_On"), set.getString("g.completed_On"), set.getInt("total"));
+                List<String> empList = null;
+                String emps = set.getString("e.name");
+                if (emps != null && !emps.isEmpty()) {
+                    empList = Arrays.asList(emps.split(","));
+                }
+                Group group = new Group(set.getInt("g.id"), collection, set.getString("g.barcode"), set.getString("g.name"), empList, set.getString("gs.name"), "", set.getString("g.started_On"), set.getString("g.completed_On"), set.getInt("g.total"));
                 group.setRoot(root);
                 groups.add(group);
             }
@@ -202,6 +245,25 @@ public class ProjectCollectionTabController implements Initializable {
             DbUtils.closeQuietly(connection);
         }
         return groups;
+    }
+
+    @Override
+    public void updateItem(Group item, String sql) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        try {
+            connection = ConnectionHandler.createDBConnection();
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, item.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Main.LOGGER.log(Level.SEVERE, "There was an error updating an item!", e);
+
+        } finally {
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(connection);
+        }
     }
 
     public static class Employee {
@@ -230,10 +292,10 @@ public class ProjectCollectionTabController implements Initializable {
         }
     }
 
-
     @Override
     public void initialize(URL loc, ResourceBundle resources) {
         try {
+            controller = this;
             initOverview();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -280,38 +342,72 @@ public class ProjectCollectionTabController implements Initializable {
                 protected void updateItem(ComboBox<String> item, boolean empty) {
                     super.updateItem(item, empty);
                     if (item != null) {
-
-                        Rectangle rectangle = new Rectangle(88, 26);
-                        rectangle.setArcHeight(16);
-                        rectangle.setArcWidth(16);
-                        switch (item.getSelectionModel().getSelectedItem()) {
-                            case "Scanning":
-                                rectangle.setFill(Color.rgb(39, 100, 186));
-                                break;
-                            case "Completed":
-                                rectangle.setFill(Color.rgb(43, 186, 30));
-                                break;
-                            case "Cropping":
-                                rectangle.setFill(Color.rgb(186, 39, 20));
-                                break;
-                            case "Inactive":
-                                rectangle.setFill(Color.BLACK);
-                                break;
-                        }
-
-                        setStyle("-fx-font-weight:bold;-fx-text-fill:white;");
-                        setGraphic(rectangle);
+                        Rectangle rectangle = getStatusRect(item);
                         setText(item.getSelectionModel().getSelectedItem());
                         setContentDisplay(ContentDisplay.CENTER);
+
+                        //Update graphic back to previously selected value - Rectangle
+                        getItem().showingProperty().addListener(new ChangeListener<Boolean>() {
+                            @Override
+                            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                                if (!newValue) {
+                                    setText(item.getSelectionModel().getSelectedItem());
+                                    setContentDisplay(ContentDisplay.CENTER);
+                                    setGraphic(rectangle);
+                                }
+                            }
+                        });
+
                         setOnMouseClicked(e -> {
                             setGraphic(item);
-                            setText("");
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                            getItem().getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+                                @Override
+                                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                                    updateItem(item, false);
+                                    Rectangle rectangle = getStatusRect(item);
+                                    setGraphic(rectangle);
+                                    controller.updateItem((Group) getTableRow().getItem(), "UPDATE `" + ProjectOverviewController.job.getName() + "_g` SET status_id=(SELECT id FROM sc_group_status WHERE name='" + newValue + "') WHERE id=?");
+                                }
+                            });
                         });
+
+                    } else {
+                        setGraphic(null);
                     }
+                }
+
+                private Rectangle getStatusRect(ComboBox<String> item) {
+                    Rectangle rectangle = new Rectangle(116, 32);
+                    rectangle.setArcHeight(16);
+                    rectangle.setArcWidth(16);
+                    switch (item.getSelectionModel().getSelectedItem()) {
+                        case "Prepping":
+                            rectangle.setFill(Color.rgb(100, 0, 142));
+                            break;
+                        case "Scanning":
+                            rectangle.setFill(Color.rgb(30, 77, 143));
+                            break;
+                        case "Cropping":
+                            rectangle.setFill(Color.rgb(0, 143, 74));
+                            break;
+                        case "QC":
+                            rectangle.setFill(Color.rgb(143, 80, 0));
+                            break;
+                        case "Completed":
+                            rectangle.setFill(Color.rgb(25, 143, 0));
+                            break;
+                        case "Inactive":
+                            rectangle.setFill(Color.LIGHTGRAY);
+                            break;
+                    }
+                    setStyle("-fx-font-size:12;-fx-font-weight:bold;-fx-text-fill:white;");
+                    setGraphic(rectangle);
+                    return rectangle;
                 }
             };
         });
+
         started_On.setCellValueFactory(new PropertyValueFactory<>("started_On"));
         started_On.setCellFactory(e -> {
             return new TableCell<Group, String>() {
@@ -320,7 +416,7 @@ public class ProjectCollectionTabController implements Initializable {
                     super.updateItem(item, empty);
                     if (item != null && !item.isEmpty()) {
                         setText(item);
-                        setStyle("-fx-opacity:.9;");
+                        setStyle("-fx-opacity:1;-fx-font-size:1em;-fx-font-weight:bold;");
                     } else {
                         setText(null);
                         setGraphic(null);
@@ -336,7 +432,7 @@ public class ProjectCollectionTabController implements Initializable {
                     super.updateItem(item, empty);
                     if (item != null && !item.isEmpty()) {
                         setText(item);
-                        setStyle("-fx-opacity:.9;");
+                        setStyle("-fx-opacity:1;-fx-font-size:1em;-fx-font-weight:bold;");
                         Group group = (Group) getTableRow().getItem();
                         if (group != null) {
                             String completed = getText();
@@ -358,7 +454,10 @@ public class ProjectCollectionTabController implements Initializable {
                                     }
 
                                     Duration duration = Duration.between(fStarted, fComp.minusDays(days));
-                                    setTooltip(new Tooltip(("Work Days: ") + dateTextFormatter(TimeUnit.DAYS.convert(duration.getSeconds(), TimeUnit.SECONDS), TimeUnit.HOURS.convert(duration.getSeconds(), TimeUnit.SECONDS) % 24, TimeUnit.MINUTES.convert(duration.getSeconds(), TimeUnit.SECONDS) % 60, TimeUnit.SECONDS.convert(duration.getSeconds(), TimeUnit.SECONDS) % 60)));
+                                    Tooltip tooltip = new Tooltip(("Work Days: ") + dateTextFormatter(TimeUnit.DAYS.convert(duration.getSeconds(), TimeUnit.SECONDS), TimeUnit.HOURS.convert(duration.getSeconds(), TimeUnit.SECONDS) % 24, TimeUnit.MINUTES.convert(duration.getSeconds(), TimeUnit.SECONDS) % 60, TimeUnit.SECONDS.convert(duration.getSeconds(), TimeUnit.SECONDS) % 60));
+                                    tooltip.setStyle("-fx-text-fill:white;");
+                                    setTooltip(tooltip);
+                                    getTooltip().setAutoHide(false);
                                 } catch (ParseException ex) {
                                     ex.printStackTrace();
                                 }
@@ -366,24 +465,9 @@ public class ProjectCollectionTabController implements Initializable {
                         }
 
                     } else {
-                        setText("-");
-                        setGraphic(null);
-                        setTooltip(null);
-                    }
-                }
-            };
-        });
-        name.setCellFactory(e -> {
-            return new TableCell<Group, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null && !item.isEmpty()) {
-                        setText(item.toString());
-                        setStyle("-fx-font-size:1.16em;-fx-font-weight:bold;");
-                    } else {
                         setText(null);
                         setGraphic(null);
+                        setTooltip(null);
                     }
                 }
             };
@@ -397,7 +481,6 @@ public class ProjectCollectionTabController implements Initializable {
                 @Override
                 public void startEdit() {
                     super.startEdit();
-
                 }
 
                 @Override
@@ -444,15 +527,15 @@ public class ProjectCollectionTabController implements Initializable {
                 protected void updateItem(CheckComboBox<String> item, boolean empty) {
                     super.updateItem(item, empty);
                     if (item != null) {
-                        item.skinProperty().addListener(new ChangeListener<Skin<?>>() {
-                            @Override
-                            public void changed(ObservableValue<? extends Skin<?>> observable, Skin<?> oldValue, Skin<?> newValue) {
-                                CheckComboBoxSkin boxSkin = (CheckComboBoxSkin) newValue;
-                                //                                box.getButtonCell().setGraphic();
-                                ObservableList<Node> nodes = boxSkin.getChildren();
-                                System.out.println(nodes);
-                            }
-                        });
+//                        item.skinProperty().addListener(new ChangeListener<Skin<?>>() {
+//                            @Override
+//                            public void changed(ObservableValue<? extends Skin<?>> observable, Skin<?> oldValue, Skin<?> newValue) {
+//                                CheckComboBoxSkin boxSkin = (CheckComboBoxSkin) newValue;
+//                                //                                box.getButtonCell().setGraphic();
+//                                ObservableList<Node> nodes = boxSkin.getChildren();
+//                                System.out.println(nodes);
+//                            }
+//                        });
                         setGraphic(item);
                     } else {
                         setGraphic(null);
@@ -460,8 +543,96 @@ public class ProjectCollectionTabController implements Initializable {
                 }
             };
         });
+
         total.setCellValueFactory(new PropertyValueFactory<>("total"));
+        total.setCellFactory(e -> {
+            return new TableCell<Group, Integer>() {
+
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item != null) {
+                        setText(Utils.formatNumber(item.toString()));
+                    } else {
+                        setText(null);
+                        setGraphic(null);
+                    }
+                }
+            };
+        });
+
         details.setCellValueFactory(new PropertyValueFactory<>("details"));
+        details.setCellFactory(e -> {
+            return new TableCell<Group, ImageView>() {
+                @Override
+                protected void updateItem(ImageView item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item != null) {
+                        setGraphic(item);
+                        setTooltip(new Tooltip("Details"));
+                        getTooltip().setStyle("-fx-text-fill:white;");
+                        setOnMousePressed(e -> {
+                            Group group = (Group) getTableRow().getItem();
+                            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/GroupDetails.fxml"));
+                            try {
+                                VBox box = loader.load();
+                                projectOverviewController.getGroupDetailDrawer().setSidePane(box);
+                                projectOverviewController.getGroupDetailDrawer().setDefaultDrawerSize(root.getWidth());
+                                projectOverviewController.getGroupDetailDrawer().setMinWidth(root.getWidth());
+                                projectOverviewController.getGroupDetailDrawer().setMinHeight(root.getHeight());
+                                GroupDetailsController detailsController = loader.getController();
+                                detailsController.getGroupTab().setText(group.getName());
+//                GroupDetailsController.Activity b1 = new GroupDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Selected");
+//                GroupDetailsController.Activity b2 = new GroupDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Being Scanned");
+//                GroupDetailsController.Activity b3 = new GroupDetailsController.Activity("#34390", LocalDateTime.now(), "Craig T.", "Item Completed");
+//                GroupDetailsController.Activity b4 = new GroupDetailsController.Activity("#84333", LocalDateTime.now(), "Cindy M.", "Item Edited");
+//                detailsController.getAcList().getItems().addAll(b1, b2, b3, b4);
+                                CompletableFuture.runAsync(() -> {
+                                    try {
+                                        ProgressIndicator indicator = new ProgressIndicator();
+                                        detailsController.getOvTable().setPlaceholder(indicator);
+                                        group.getItemList().setAll(detailsController.getGroupItems(group));
+                                    } catch (SQLException ex) {
+                                        ex.printStackTrace();
+                                    }
+
+                                }).thenRunAsync(() -> {
+                                    Platform.runLater(() -> {
+                                        try {
+                                            detailsController.getItemsTotal().setText(String.valueOf(group.getItemList().size()));
+                                            detailsController.getItemsComp().setText(String.valueOf(detailsController.getCompItems(group)));
+                                            detailsController.getTotalPages().setText(Utils.formatNumber(String.valueOf(detailsController.getTotalPages(group))));
+                                            detailsController.getTotalEmps().setText(String.valueOf(group.getEmployee().getCheckModel().getCheckedItems().size()));
+                                        } catch (SQLException exception) {
+                                            exception.printStackTrace();
+                                        }
+                                    });
+                                }).thenRunAsync(() -> {
+                                    detailsController.getOvTable().getItems().setAll(group.getItemList());
+                                    detailsController.getOvTable().refresh();
+                                });
+
+                                detailsController.getClose().setOnMouseClicked(e3 -> {
+                                    projectOverviewController.getGroupDetailDrawer().close();
+                                    projectOverviewController.getGroupDetailDrawer().setOnDrawerClosed(e4 -> {
+                                        projectOverviewController.getGroupDetailDrawer().setPrefWidth(0);
+                                        projectOverviewController.getGroupDetailDrawer().setMinWidth(0);
+                                    });
+                                });
+                                projectOverviewController.getGroupDetailDrawer().open();
+
+                            } catch (IOException e2) {
+                                e2.printStackTrace();
+                            }
+                        });
+
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
+        });
+
         invTable.setColumnFixingEnabled(true);
         invTable.setRowFixingEnabled(true);
         CompletableFuture.supplyAsync(() -> {
@@ -475,11 +646,16 @@ public class ProjectCollectionTabController implements Initializable {
         }).thenApplyAsync(groups -> {
             invTable.getItems().addAll(groups);
             return null;
+        }).thenRunAsync(() -> {
+            try {
+                totalPages.setText(Utils.formatNumber(String.valueOf(getPgSubTotal())));
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+            groupsComp.setText(Utils.formatNumber(String.valueOf(invTable.getItems().stream().filter(e -> e.getStatus().getSelectionModel().getSelectedItem().equals("Completed")).count())));
+            groupsTotal.setText(Utils.formatNumber(String.valueOf(invTable.getItems().size())));
         }).join();
-        totalPages.setText(Utils.formatNumber(String.valueOf(invTable.getItems().stream().mapToInt(e -> e.totalProperty().get()).sum())));
-        groupsComp.setText(Utils.formatNumber(String.valueOf(invTable.getItems().stream().filter(e -> e.getStatus().getSelectionModel().getSelectedItem().equals("Completed")).count())));
-        groupsTotal.setText(Utils.formatNumber(String.valueOf(invTable.getItems().size())));
-//        invTable.getFixedColumns().add(details);
+
         final FilteredList<Group> filteredData = new FilteredList<Group>(invTable.getItems(), p -> true);
         invSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(p -> {
@@ -504,7 +680,35 @@ public class ProjectCollectionTabController implements Initializable {
         invTable.setItems(sortedData);
     }
 
+
+    public int getPgSubTotal() throws SQLException {
+        Connection connection = null;
+        ResultSet set = null;
+        PreparedStatement ps = null;
+        int compItems = 0;
+        try {
+            connection = createDBConnection();
+            ps = connection.prepareStatement("SELECT SUM(total) as totalpgs FROM `" + ProjectOverviewController.job.getName() + "`");
+            set = ps.executeQuery();
+            if (set.next()) {
+                compItems = set.getInt("totalpgs");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        } finally {
+            DbUtils.closeQuietly(set);
+            DbUtils.closeQuietly(ps);
+            DbUtils.closeQuietly(connection);
+        }
+
+        return compItems;
+    }
+
+
     private void initOverview() throws SQLException {
+        //Employee Handling - With Totals
         ObservableList<Employee> activeEmps = getActiveEmps();
         activeEmps.sort(new Comparator<Employee>() {
             @Override
@@ -512,13 +716,16 @@ public class ProjectCollectionTabController implements Initializable {
                 return Integer.compare(o1.getTotal(), o2.getTotal());
             }
         });
+        Collections.reverse(activeEmps);
         StringBuilder builder = new StringBuilder();
         List<String> empList = IntStream.range(0, activeEmps.size()).mapToObj(idx -> {
-            return (idx + 1) + " " + activeEmps.get(idx).name + " " + activeEmps.get(idx).total;
+            return (idx + 1) + ". " + activeEmps.get(idx).name + " - " + Utils.formatNumber(String.valueOf(activeEmps.get(idx).total));
         }).collect(Collectors.toList());
         empList.forEach(e -> builder.append(e).append("\n"));
         totalEmps.setText(String.valueOf(activeEmps.size()));
-        Tooltip.install(totalEmps, new Tooltip(builder.toString()));
+        Tooltip tooltip = new Tooltip(builder.toString());
+        tooltip.setAutoHide(false);
+        Tooltip.install(empDetails, tooltip);
         Map<Integer, Integer> items = getItems();
         itemsTotal.setText(Utils.formatNumber(items.values().toArray()[0].toString()));
         itemsComp.setText(Utils.formatNumber(items.keySet().toArray()[0].toString()));

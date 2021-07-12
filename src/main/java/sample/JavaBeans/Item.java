@@ -1,26 +1,24 @@
 package sample.JavaBeans;
 
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
+import javafx.collections.ObservableMap;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
+import org.controlsfx.control.CheckComboBox;
 
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Item<K> extends RecursiveTreeObject<K> {
-    public final Image folderIcon = new Image(Item.class.getResourceAsStream("/IMAGES/folder.png"));
-    public final Image fileIcon = new Image(Item.class.getResourceAsStream("/IMAGES/file.png"));
+import static sample.ProjectCollectionTabController.CONDITION;
+
+public class Item {
+
+    public Image folderIcon = new Image(Item.class.getResourceAsStream("/IMAGES/folder.png"));
+    public Image fileIcon = new Image(Item.class.getResourceAsStream("/IMAGES/book.png"));
     public BooleanProperty overridden; //Tracks if the user want to complete a non-existing item (Physical material may not exist)
     public BooleanProperty exists; //File/Folder
     public SimpleIntegerProperty id;
@@ -29,11 +27,11 @@ public class Item<K> extends RecursiveTreeObject<K> {
     public SimpleStringProperty employee;
     public Label delete;
     public SimpleStringProperty name;
-    public Label type;
-    public CheckBox completed;
-    public Label details;
+    public ImageView type;
+    public SimpleBooleanProperty completed;
+    public ImageView details;
     public SimpleStringProperty comments;
-    public SimpleListProperty<String> conditions;
+    public CheckComboBox<String> condition;
     public List<String> scanners;
     public Collection collection;
     public Group group;
@@ -50,6 +48,7 @@ public class Item<K> extends RecursiveTreeObject<K> {
         }
         return total;
     }
+
 
 //    public static void removeItem(Item item) {
 //        Connection connection = null;
@@ -78,75 +77,61 @@ public class Item<K> extends RecursiveTreeObject<K> {
         this.name.set(name);
         this.total.set(total);
         this.nonFeeder.set(non_feeder);
-        this.type.setText(type);
         this.employee = new SimpleStringProperty(employee);
-        setupType(type);
-        this.completed.setSelected(completed);
-        this.comments.set(comments == null || comments.isEmpty() ? comments = "-" : comments);
+        initType(type);
+        this.completed.set(completed);
+        this.comments.set(comments == null || comments.isEmpty() ? comments = "" : comments);
         this.started_On.set(startedOn);
         this.completed_On.set(completedOn);
         this.workstation.set(workstation == null || workstation.isEmpty() ? workstation = "N/A" : workstation);
     }
 
-    public void setupType(String type) {
-        final ImageView view = new ImageView();
+    public void initType(String type) {
         switch (type) {
             case "Folder":
             case "Root":
-                view.setImage(folderIcon);
+                Platform.runLater(() -> {
+                    this.type.setImage(folderIcon);
+                });
                 break;
             case "Multi-Paged":
-                view.setImage(fileIcon);
+                Platform.runLater(() -> {
+                    this.type.setImage(fileIcon);
+                });
                 break;
         }
-        this.type.setGraphic(view);
-        view.setFitWidth(20);
-        view.setFitHeight(20);
-        this.type.setGraphicTextGap(16);
-        this.type.setGraphic(view);
-        Tooltip tooltip = new Tooltip(type);
-        tooltip.setStyle("-fx-text-fill:white;");
-        this.type.setTooltip(tooltip);
-        this.type.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        this.type.setFitWidth(24);
+        this.type.setFitHeight(24);
+        Tooltip.install(this.type, new Tooltip(type));
     }
 
     public Item() {
         this.overridden = new SimpleBooleanProperty();
-        this.details = new Label("Details");
-        this.details.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        ImageView view = new ImageView(getClass().getResource("/IMAGES/info.png").toExternalForm());
-        view.setFitHeight(24);
-        view.setFitWidth(24);
-        this.details.setGraphic(view);
-        this.details.setTranslateX(0);
-        this.details.setLayoutY(-2);
-        this.details.setTooltip(new Tooltip("Details"));
-        this.details.getGraphic().maxHeight(8);
-        this.details.getGraphic().maxWidth(8);
-        this.details.getStyleClass().add("detailBtn");
+        this.details = new ImageView(getClass().getResource("/IMAGES/info.png").toExternalForm());
+        this.details.setFitHeight(24);
+        this.details.setFitWidth(24);
+        Tooltip.install(this.details, new Tooltip("Details"));
+        this.details.getStyleClass().add("view");
         this.id = new SimpleIntegerProperty(0);
         this.name = new SimpleStringProperty();
         this.nonFeeder = new SimpleIntegerProperty(0);
-        this.completed = new CheckBox();
-        this.completed.setMinSize(60, 60);
-        this.completed.setContextMenu(new ContextMenu());
-        final MenuItem override = new MenuItem("Override");
-        override.setOnAction(e -> {
-            this.overridden.set(true);
-            this.exists.set(true);
-            this.completed.setSelected(true);
-//            updateSelected(this);
-        });
-        this.completed.getContextMenu().getItems().add(override);
+        this.completed = new SimpleBooleanProperty(false);
+//        this.completed.setContextMenu(new ContextMenu());
+//        final MenuItem override = new MenuItem("Override");
+//        override.setOnAction(e -> {
+//            this.overridden.set(true);
+//            this.exists.set(true);
+//            this.completed.setSelected(true);
+////            updateSelected(this);
+//        });
+//        this.completed.getContextMenu().getItems().add(override);
         this.comments = new SimpleStringProperty();
-        this.type = new Label();
+        this.type = new ImageView();
         this.delete = new Label("Remove");
         this.delete.getStyleClass().add("detailBtn");
         this.delete.setStyle("-fx-font-size:1em;-fx-text-fill: red; -fx-opacity: .8;");
-        this.completed.setPadding(new Insets(24, 24, 24, 24));
         this.total = new SimpleIntegerProperty(0);
-        this.conditions = new SimpleListProperty<>();
-        this.conditions.set(FXCollections.observableArrayList());
+        this.condition = new CheckComboBox<>(CONDITION);
         this.projColumns = new SimpleMapProperty<>();
         this.projColumns.set(FXCollections.observableHashMap());
         this.started_On = new SimpleStringProperty();
@@ -219,27 +204,31 @@ public class Item<K> extends RecursiveTreeObject<K> {
         this.location = location;
     }
 
-    public Label getType() {
+    public ImageView getType() {
         return type;
     }
 
-    public void setType(Label type) {
+    public void setType(ImageView type) {
         this.type = type;
     }
 
-    public CheckBox getCompleted() {
+    public boolean isCompleted() {
+        return completed.get();
+    }
+
+    public BooleanProperty completedProperty() {
         return completed;
     }
 
-    public void setCompleted(CheckBox completed) {
-        this.completed = completed;
+    public void setCompleted(boolean completed) {
+        this.completed.set(completed);
     }
 
-    public Label getDetails() {
+    public ImageView getDetails() {
         return details;
     }
 
-    public void setDetails(Label details) {
+    public void setDetails(ImageView details) {
         this.details = details;
     }
 
@@ -255,16 +244,40 @@ public class Item<K> extends RecursiveTreeObject<K> {
         this.comments.set(comments);
     }
 
-    public ObservableList<String> getConditions() {
-        return conditions.get();
+    public Image getFolderIcon() {
+        return folderIcon;
     }
 
-    public SimpleListProperty<String> conditionsProperty() {
-        return conditions;
+    public void setFolderIcon(Image folderIcon) {
+        this.folderIcon = folderIcon;
     }
 
-    public void setConditions(ObservableList<String> conditions) {
-        this.conditions.set(conditions);
+    public Image getFileIcon() {
+        return fileIcon;
+    }
+
+    public void setFileIcon(Image fileIcon) {
+        this.fileIcon = fileIcon;
+    }
+
+    public CheckComboBox<String> getCondition() {
+        return condition;
+    }
+
+    public void setCondition(CheckComboBox<String> condition) {
+        this.condition = condition;
+    }
+
+    public ObservableMap<String, String> getProjColumns() {
+        return projColumns.get();
+    }
+
+    public SimpleMapProperty<String, String> projColumnsProperty() {
+        return projColumns;
+    }
+
+    public void setProjColumns(ObservableMap<String, String> projColumns) {
+        this.projColumns.set(projColumns);
     }
 
     public void setCollection(Collection collection) {
@@ -385,7 +398,7 @@ public class Item<K> extends RecursiveTreeObject<K> {
                 ", completed=" + completed +
                 ", details=" + details +
                 ", comments=" + comments +
-                ", conditions=" + conditions +
+                ", conditions=" + condition +
                 ", scanners=" + scanners +
                 ", collection=" + collection +
                 ", group=" + group +

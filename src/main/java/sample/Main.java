@@ -6,11 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.logging.Logger;
+
 @SuppressWarnings("unchecked")
 public class Main extends Application {
 
     public static ProjectOverviewController projectOverviewController;
-    public static final String CONN = "jdbc:mysql://192.168.1.147/Tracking?useSSL=false";
+    public final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     @Override
     public void start(Stage primaryStage) throws Exception{

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -177,16 +178,19 @@
                               <Insets left="8.0" right="8.0" />
                            </VBox.margin>
                            <children>
-                              <TableView2 fx:id="invTable" fixedCellSize="88.0" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" style="-fx-border-color: #07255e11; -fx-border-radius: 8;" stylesheets="@../CSS/jfoenix-components.css" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                              <TableView2 fx:id="invTable" editable="true" fixedCellSize="88.0" focusTraversable="false" rowHeaderVisible="true" rowHeaderWidth="60.0" style="-fx-border-color: #07255e11; -fx-border-radius: 8;" stylesheets="@../CSS/jfoenix-components.css" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                                  <columns>
                                     <TableColumn2 fx:id="details" maxWidth="64.0" minWidth="64.0" prefWidth="64.0" />
                                     <TableColumn2 fx:id="barcode" maxWidth="300.0" minWidth="100.0" prefWidth="120.0" text="Barcode" />
-                                    <TableColumn2 fx:id="name" maxWidth="-1.0" minWidth="100.0" prefWidth="400.0" text="Name" />
+                                    <TableColumn2 fx:id="name" maxWidth="-1.0" minWidth="200.0" prefWidth="300.0" text="Name" />
                                     <TableColumn2 fx:id="total" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Total" />
-                                    <TableColumn2 fx:id="status" maxWidth="-1.0" minWidth="100.0" prefWidth="200.0" text="Status" />
-                                    <TableColumn2 fx:id="employees" maxWidth="-1.0" minWidth="300.0" prefWidth="-1.0" text="Employees" />
-                                    <TableColumn2 fx:id="location" maxWidth="-1.0" minWidth="200.0" prefWidth="200.0" text="Location" />
+                                    <TableColumn2 fx:id="status" maxWidth="200.0" minWidth="100.0" prefWidth="200.0" text="Status" />
+                                    <TableColumn2 fx:id="employees" maxWidth="400.0" minWidth="100.0" prefWidth="300.0" text="Employees" />
+                                    <TableColumn2 fx:id="location" maxWidth="400.0" minWidth="100.0" prefWidth="200.0" text="Location" />
                                  </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
                               </TableView2>
                            </children>
                         </VBox>
